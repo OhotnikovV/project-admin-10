@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Data.Win.ADODB, Data.DB,
   Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls,
-  System.Win.ScktComp;
+  System.Win.ScktComp, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc;
 
 type
   TForm1 = class(TForm)
@@ -58,6 +58,8 @@ type
     Memo1: TMemo;
     Button6: TButton;
     StatusBar1: TStatusBar;
+    XMLDocument1: TXMLDocument;
+    Edit9: TEdit;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -65,9 +67,9 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
-    procedure Button6Click(Sender: TObject);
     procedure ServerSocket1ClientRead(Sender: TObject;
       Socket: TCustomWinSocket);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -81,41 +83,36 @@ implementation
 
 {$R *.dfm}
 
+// добавить запись в БД
 procedure TForm1.Button1Click(Sender: TObject);
 var
   str:string;
 begin
-  // очищаем свойство sql от запросов
-  ADOQuery1.SQL.Clear;
-  // вводим запрос
+  ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
   str := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+Edit1.Text+''','''+Edit7.Text+''','+Edit2.Text+','''+
-  Edit3.Text+''', now(), now() )';
-
+  Edit3.Text+''', now(), now() )'; // вводим запрос
   ADOQuery1.SQL.Add(str);
-  ADOQuery1.ExecSQL;
-  // перезапускаем таблицу
+  ADOQuery1.ExecSQL; // перезапускаем таблицу
   ADOTableComp.close;
   ADOTableComp.open;
-
   Edit1.Clear; Edit2.Clear; Edit3.Clear; Edit7.Clear;
 end;
 
+// обновить запись в БД
 procedure TForm1.Button2Click(Sender: TObject);
 var
   str:string;
 begin
   ADOQuery1.SQL.Clear;
-  // вводим запрос
   str := 'update computers set MAC_address='''+Edit4.Text+''', IP='''+Edit8.Text+''', InventoryNumber='+
-  Edit5.Text+', Location='''+Edit6.Text+''', LastChanges=now() Where  ID='+DBLookupComboBox1.Text;
-
+  Edit5.Text+', Location='''+Edit6.Text+''', LastChanges=now() Where  ID='+DBLookupComboBox1.Text; // вводим запрос
   ADOQuery1.SQL.Add(str);
   ADOQuery1.ExecSQL;
-
   ADOTableComp.close;
   ADOTableComp.open;
 end;
 
+// удалить запись в БД
 procedure TForm1.Button3Click(Sender: TObject);
 var
   str:string;
@@ -124,16 +121,17 @@ begin
   str:='delete from computers where id='+DBLookupComboBox2.Text;
   ADOQuery1.SQL.Add(str);
   ADOQuery1.ExecSQL;
-
   ADOTableComp.close;
   ADOTableComp.open;
 end;
 
+// очистить запись в Edit
 procedure TForm1.Button4Click(Sender: TObject);
 begin
   Edit1.Clear; Edit2.Clear; Edit3.Clear; Edit7.Clear;
 end;
 
+// очистить запись в Edit
 procedure TForm1.Button5Click(Sender: TObject);
 begin
   Edit4.Clear; Edit5.Clear; Edit6.Clear; Edit8.Clear;
@@ -141,13 +139,13 @@ end;
 
 procedure TForm1.Button6Click(Sender: TObject);
 begin
-  ServerSocket1.Port:= 64000; // указываем порт
-  ServerSocket1.Active:=True; // активируем наш сервер
-  ServerSocket1.Open; // запускаем
-  if ServerSocket1.Active then
-    Statusbar1.Panels.Items[0].Text:='Active and Open ServerSocket1 192.168.105.104';
+  //XMLDocument1.LoadFromFile('file:///E:/Projects/client-project/computers.xml');
+  XMLDocument1.Active := true;
+  Edit9.Text := XMLDocument1.DocumentElement.ChildNodes['ip'].Text;
+  XMLDocument1.Active := false;
 end;
 
+// выыести данные в Edit из БД
 procedure TForm1.DBLookupComboBox1Click(Sender: TObject);
 begin
   Edit4.Text:=ADOTableComp.FieldByName('MAC_address').AsString;
@@ -156,18 +154,25 @@ begin
   Edit8.Text:=ADOTableComp.FieldByName('IP').AsString;
 end;
 
+// Настройки
 procedure TForm1.FormCreate(Sender: TObject);
 begin
    ADOTableComp.Active:=false;
    ADOTableComp.Active:=true;
+   // --- Создаем сервер---///
+   ServerSocket1.Port:= 65000; // указываем порт
+   ServerSocket1.Active:=True; // активируем наш сервер
+   ServerSocket1.Open; // запускаем
+   if ServerSocket1.Active then
+    Statusbar1.Panels.Items[0].Text:='Active and Open ServerSocket1 192.168.100.3';
 end;
 
-
+////////////////// // процедура на чтение сообщения от клиента //////////////////
 procedure TForm1.ServerSocket1ClientRead(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  Memo1.Lines.Add(Socket.ReceiveText);
-  StatusBar1.Panels.Items[0].Text:=Socket.RemoteAddress;
+  Memo1.Lines.Add(Socket.ReceiveText);  // получить сообщение от клиента
+  StatusBar1.Panels.Items[0].Text:='Data transferred from '+Socket.RemoteAddress;
 end;
 
 end.

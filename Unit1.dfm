@@ -21,7 +21,7 @@ object Form1: TForm1
     Top = 0
     Width = 797
     Height = 571
-    ActivePage = TabSheet1
+    ActivePage = TabSheet6
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -315,6 +315,13 @@ object Form1: TForm1
               Width = 50
             end>
         end
+        object Edit9: TEdit
+          Left = 8
+          Top = 280
+          Width = 121
+          Height = 21
+          TabOrder = 3
+        end
       end
     end
   end
@@ -376,5 +383,10 @@ object Form1: TForm1
     OnClientRead = ServerSocket1ClientRead
     Left = 600
     Top = 160
+  end
+  object XMLDocument1: TXMLDocument
+    Left = 680
+    Top = 160
+    DOMVendorDesc = 'MSXML'
   end
 end
