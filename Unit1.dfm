@@ -26,10 +26,6 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object DBGrid1: TDBGrid
         Left = 0
         Top = 0
@@ -61,10 +57,6 @@ object Form1: TForm1
           TabOrder = 0
           object TabSheet3: TTabSheet
             Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Label1: TLabel
               Left = 11
               Top = 3
@@ -143,10 +135,6 @@ object Form1: TForm1
           object TabSheet4: TTabSheet
             Caption = #1048#1079#1084#1077#1085#1080#1090#1100
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Label4: TLabel
               Left = 11
               Top = 49
@@ -243,10 +231,6 @@ object Form1: TForm1
           object TabSheet5: TTabSheet
             Caption = #1059#1076#1072#1083#1080#1090#1100
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Label10: TLabel
               Left = 11
               Top = 3
@@ -280,10 +264,6 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object DBGrid2: TDBGrid
         Left = 0
         Top = 0
@@ -300,7 +280,7 @@ object Form1: TForm1
       end
     end
     object TabSheet6: TTabSheet
-      Caption = #1057#1086#1086#1073#1097#1077#1085#1080#1103
+      Caption = #1050#1083#1080#1077#1085#1090#1099
       ImageIndex = 2
       object Panel2: TPanel
         Left = 0
@@ -321,7 +301,7 @@ object Form1: TForm1
           Top = 232
           Width = 75
           Height = 25
-          Caption = #1040#1082#1090#1080#1074'. '#1089#1077#1088#1074
+          Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100
           TabOrder = 1
           OnClick = Button6Click
         end
@@ -400,6 +380,7 @@ object Form1: TForm1
     Active = False
     Port = 0
     ServerType = stNonBlocking
+    OnClientConnect = ServerSocket1ClientConnect
     OnClientRead = ServerSocket1ClientRead
     Left = 600
     Top = 160

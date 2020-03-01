@@ -70,6 +70,8 @@ type
     procedure ServerSocket1ClientRead(Sender: TObject;
       Socket: TCustomWinSocket);
     procedure Button6Click(Sender: TObject);
+    procedure ServerSocket1ClientConnect(Sender: TObject;
+      Socket: TCustomWinSocket);
   private
     { Private declarations }
   public
@@ -162,6 +164,13 @@ begin
    ServerSocket1.Open; // запускаем
    if ServerSocket1.Active then
     Statusbar1.Panels.Items[0].Text:='Active and Open ServerSocket1 192.168.100.3';
+end;
+
+// Процедура -  клиент подсоединился
+procedure TForm1.ServerSocket1ClientConnect(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+  Memo1.Lines.Add('['+TimeToStr(Time)+'] Подключился клиент'+Socket.RemoteAddress);
 end;
 
 // Процедура - клиент установил сокетное соединение и ждет ответа сервера
