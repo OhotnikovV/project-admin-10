@@ -140,9 +140,6 @@ end;
 procedure TForm1.Button6Click(Sender: TObject);
 begin
   //XMLDocument1.LoadFromFile('file:///E:/Projects/client-project/computers.xml');
-  XMLDocument1.Active := true;
-  Edit9.Text := XMLDocument1.DocumentElement.ChildNodes['ip'].Text;
-  XMLDocument1.Active := false;
 end;
 
 // выыести данные в Edit из БД
@@ -154,11 +151,11 @@ begin
   Edit8.Text:=ADOTableComp.FieldByName('IP').AsString;
 end;
 
-// Настройки
+// Процедура - при создании формы
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-   ADOTableComp.Active:=false;
-   ADOTableComp.Active:=true;
+   ADOTableComp.Active:=false; ADOTableComp.Active:=true;
+   ADOTableLogs.Active:=false; ADOTableLogs.Active:=true;
    // --- Создаем сервер---///
    ServerSocket1.Port:= 65000; // указываем порт
    ServerSocket1.Active:=True; // активируем наш сервер
@@ -167,11 +164,15 @@ begin
     Statusbar1.Panels.Items[0].Text:='Active and Open ServerSocket1 192.168.100.3';
 end;
 
-////////////////// // процедура на чтение сообщения от клиента //////////////////
+// Процедура - клиент установил сокетное соединение и ждет ответа сервера
 procedure TForm1.ServerSocket1ClientRead(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  Memo1.Lines.Add(Socket.ReceiveText);  // получить сообщение от клиента
+  // Memo1.Lines.Add(Socket.ReceiveText);  // получить сообщение от клиента
+  XMLDocument1.XML.Text:=Socket.ReceiveText;
+  XMLDocument1.Active := true;
+  Edit9.Text := XMLDocument1.DocumentElement.ChildNodes['ip'].Text;
+  XMLDocument1.Active := false;
   StatusBar1.Panels.Items[0].Text:='Data transferred from '+Socket.RemoteAddress;
 end;
 
