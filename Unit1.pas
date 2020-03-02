@@ -72,6 +72,11 @@ type
     procedure Button6Click(Sender: TObject);
     procedure ServerSocket1ClientConnect(Sender: TObject;
       Socket: TCustomWinSocket);
+    procedure ServerSocket1ClientDisconnect(Sender: TObject;
+      Socket: TCustomWinSocket);
+    procedure ServerSocket1ClientError(Sender: TObject;
+      Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
+      var ErrorCode: Integer);
   private
     { Private declarations }
   public
@@ -80,6 +85,7 @@ type
 
 var
   Form1: TForm1;
+  str:string;
 
 implementation
 
@@ -87,8 +93,6 @@ implementation
 
 // добавить запись в БД
 procedure TForm1.Button1Click(Sender: TObject);
-var
-  str:string;
 begin
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
   str := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+Edit1.Text+''','''+Edit7.Text+''','+Edit2.Text+','''+
@@ -102,8 +106,6 @@ end;
 
 // обновить запись в БД
 procedure TForm1.Button2Click(Sender: TObject);
-var
-  str:string;
 begin
   ADOQuery1.SQL.Clear;
   str := 'update computers set MAC_address='''+Edit4.Text+''', IP='''+Edit8.Text+''', InventoryNumber='+
@@ -116,8 +118,6 @@ end;
 
 // удалить запись в БД
 procedure TForm1.Button3Click(Sender: TObject);
-var
-  str:string;
 begin
   ADOQuery1.SQL.Clear;
   str:='delete from computers where id='+DBLookupComboBox2.Text;
@@ -159,8 +159,8 @@ begin
    ADOTableComp.Active:=false; ADOTableComp.Active:=true;
    ADOTableLogs.Active:=false; ADOTableLogs.Active:=true;
    // --- Создаем сервер---///
-   ServerSocket1.Port:= 65000; // указываем порт
-   ServerSocket1.Active:=True; // активируем наш сервер
+   {ServerSocket1.Port:= 65000; // указываем порт
+   ServerSocket1.Active:=True; // активируем наш сервер }
    ServerSocket1.Open; // запускаем
    if ServerSocket1.Active then
     Statusbar1.Panels.Items[0].Text:='Active and Open ServerSocket1 192.168.100.3';
@@ -170,7 +170,27 @@ end;
 procedure TForm1.ServerSocket1ClientConnect(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  Memo1.Lines.Add('['+TimeToStr(Time)+'] Подключился клиент'+Socket.RemoteAddress);
+  Memo1.Lines.Add('['+TimeToStr(Time)+'] Подключился клиент '+Socket.RemoteAddress);
+  ADOQuery1.SQL.Clear;
+  str := 'insert logs (IP,AccessTime) values ('''+Socket.RemoteAddress+''', now())';
+  ADOQuery1.SQL.Add(str);
+  ADOQuery1.ExecSQL;
+  ADOTableLogs.close;
+  ADOTableLogs.open;
+end;
+
+// Процедура -  клиент отключился
+procedure TForm1.ServerSocket1ClientDisconnect(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+  Memo1.Lines.Add('['+TimeToStr(Time)+'] Клиент отключился '+Socket.RemoteAddress);
+end;
+
+// Процедура -  при возникновении ошибки
+procedure TForm1.ServerSocket1ClientError(Sender: TObject;
+  Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+begin
+  ErrorCode:=0;
 end;
 
 // Процедура - клиент установил сокетное соединение и ждет ответа сервера

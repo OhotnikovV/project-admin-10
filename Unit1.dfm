@@ -290,15 +290,15 @@ object Form1: TForm1
         Align = alClient
         TabOrder = 0
         object Memo1: TMemo
-          Left = 8
+          Left = 1
           Top = 0
           Width = 369
           Height = 209
           TabOrder = 0
         end
         object Button6: TButton
-          Left = 8
-          Top = 232
+          Left = 0
+          Top = 215
           Width = 75
           Height = 25
           Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100
@@ -316,8 +316,8 @@ object Form1: TForm1
             end>
         end
         object Edit9: TEdit
-          Left = 8
-          Top = 280
+          Left = 1
+          Top = 246
           Width = 121
           Height = 21
           TabOrder = 3
@@ -373,16 +373,18 @@ object Form1: TForm1
     Active = False
     ClientType = ctNonBlocking
     Port = 0
-    Left = 528
+    Left = 600
     Top = 160
   end
   object ServerSocket1: TServerSocket
-    Active = False
-    Port = 0
+    Active = True
+    Port = 65000
     ServerType = stNonBlocking
     OnClientConnect = ServerSocket1ClientConnect
+    OnClientDisconnect = ServerSocket1ClientDisconnect
     OnClientRead = ServerSocket1ClientRead
-    Left = 600
+    OnClientError = ServerSocket1ClientError
+    Left = 528
     Top = 160
   end
   object XMLDocument1: TXMLDocument
