@@ -280,7 +280,7 @@ object Form1: TForm1
       end
     end
     object TabSheet6: TTabSheet
-      Caption = #1050#1083#1080#1077#1085#1090#1099
+      Caption = #1057#1077#1088#1074#1077#1088
       ImageIndex = 2
       object Panel2: TPanel
         Left = 0
@@ -295,15 +295,6 @@ object Form1: TForm1
           Width = 369
           Height = 209
           TabOrder = 0
-        end
-        object Button6: TButton
-          Left = 0
-          Top = 215
-          Width = 75
-          Height = 25
-          Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100
-          TabOrder = 1
-          OnClick = Button6Click
         end
         object StatusBar1: TStatusBar
           Left = 1
@@ -320,7 +311,21 @@ object Form1: TForm1
           Top = 246
           Width = 121
           Height = 21
+          TabOrder = 2
+        end
+        object Edit10: TEdit
+          Left = 0
+          Top = 273
+          Width = 121
+          Height = 21
           TabOrder = 3
+        end
+        object Edit11: TEdit
+          Left = 0
+          Top = 300
+          Width = 121
+          Height = 21
+          TabOrder = 4
         end
       end
     end
