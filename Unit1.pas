@@ -58,9 +58,7 @@ type
     Memo1: TMemo;
     StatusBar1: TStatusBar;
     XMLDocument1: TXMLDocument;
-    Edit9: TEdit;
-    Edit10: TEdit;
-    Edit11: TEdit;
+    Button6: TButton;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -77,6 +75,7 @@ type
     procedure ServerSocket1ClientError(Sender: TObject;
       Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
       var ErrorCode: Integer);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -87,6 +86,7 @@ var
   Form1: TForm1;
   str:string;
   NameComputer, MAC_address:string;
+  i:integer;
 
 implementation
 
@@ -140,6 +140,12 @@ begin
   Edit4.Clear; Edit5.Clear; Edit6.Clear; Edit8.Clear;
 end;
 
+procedure TForm1.Button6Click(Sender: TObject);
+begin
+  for i :=0 to ServerSocket1.Socket.ActiveConnections - 1 do
+     ServerSocket1.Socket.Connections[i].SendText('need date');   //Отправить сообщение клиенту
+end;
+
 // выыести данные в Edit из БД
 procedure TForm1.DBLookupComboBox1Click(Sender: TObject);
 begin
@@ -167,12 +173,8 @@ end;
 // Процедура -  клиент подсоединился
 procedure TForm1.ServerSocket1ClientConnect(Sender: TObject;
   Socket: TCustomWinSocket);
-var
-  i: integer;
 begin
   Memo1.Lines.Add('['+TimeToStr(Time)+'] Подключился клиент '+Socket.RemoteAddress);
-    {for i :=0 to ServerSocket1.Socket.ActiveConnections - 1 do
-     ServerSocket1.Socket.Connections[i].SendText('Server active'); }  //Отправить сообщение клиенту
 end;
 
 // Процедура -  клиент отключился
@@ -189,11 +191,11 @@ begin
   ErrorCode:=0;
 end;
 
-// Процедура - клиент установил сокетное соединение и ждет ответа сервера
+// Процедура - клиент передал cерверу какие-либо данные
 procedure TForm1.ServerSocket1ClientRead(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  // Memo1.Lines.Add(Socket.ReceiveText);  // получить сообщение от клиента
+  //Memo1.Lines.Add(Socket.ReceiveText);  // получить сообщение от клиента
   XMLDocument1.XML.Text:=Socket.ReceiveText; // отправить сообщение клиента компоненту XMLDocument
   XMLDocument1.Active := true; // активируем компонент XMLDocument
 

@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   ActiveControl = PageControl1
-  Caption = #1057#1077#1088#1074#1077#1088
+  Caption = 'Administration program - Server'
   ClientHeight = 571
   ClientWidth = 797
   Color = clBtnFace
@@ -306,26 +306,14 @@ object Form1: TForm1
               Width = 50
             end>
         end
-        object Edit9: TEdit
-          Left = 1
-          Top = 246
-          Width = 121
-          Height = 21
+        object Button6: TButton
+          Left = 9
+          Top = 232
+          Width = 75
+          Height = 25
+          Caption = #1055#1086#1083#1091#1095#1080#1090#1100
           TabOrder = 2
-        end
-        object Edit10: TEdit
-          Left = 0
-          Top = 273
-          Width = 121
-          Height = 21
-          TabOrder = 3
-        end
-        object Edit11: TEdit
-          Left = 0
-          Top = 300
-          Width = 121
-          Height = 21
-          TabOrder = 4
+          OnClick = Button6Click
         end
       end
     end
