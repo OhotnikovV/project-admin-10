@@ -51,7 +51,6 @@ type
     Label10: TLabel;
     Button4: TButton;
     Button5: TButton;
-    ClientSocket1: TClientSocket;
     ServerSocket1: TServerSocket;
     TabSheet6: TTabSheet;
     Panel2: TPanel;
@@ -59,6 +58,11 @@ type
     StatusBar1: TStatusBar;
     XMLDocument1: TXMLDocument;
     Button6: TButton;
+    ADOQueryLogs: TADOQuery;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    Button7: TButton;
+    TrayIcon1: TTrayIcon;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -76,6 +80,9 @@ type
       Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
       var ErrorCode: Integer);
     procedure Button6Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Button7Click(Sender: TObject);
+    procedure TrayIcon1DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -92,7 +99,7 @@ implementation
 
 {$R *.dfm}
 
-// добавить запись в БД
+// добавить запись в таблице Computers
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
@@ -105,7 +112,7 @@ begin
   Edit1.Clear; Edit2.Clear; Edit3.Clear; Edit7.Clear;
 end;
 
-// обновить запись в БД
+// обновить запись в таблице Computers
 procedure TForm1.Button2Click(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear;
@@ -117,7 +124,7 @@ begin
   ADOTableComp.open;
 end;
 
-// удалить запись в БД
+// удалить запись в таблице Computers
 procedure TForm1.Button3Click(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear;
@@ -128,25 +135,32 @@ begin
   ADOTableComp.open;
 end;
 
-// очистить запись в Edit
+// Очистить запись в Edit
 procedure TForm1.Button4Click(Sender: TObject);
 begin
   Edit1.Clear; Edit2.Clear; Edit3.Clear; Edit7.Clear;
 end;
 
-// очистить запись в Edit
+// Очистить запись в Edit
 procedure TForm1.Button5Click(Sender: TObject);
 begin
   Edit4.Clear; Edit5.Clear; Edit6.Clear; Edit8.Clear;
 end;
 
+// Отправить сообщения клиентам
 procedure TForm1.Button6Click(Sender: TObject);
 begin
   for i :=0 to ServerSocket1.Socket.ActiveConnections - 1 do
-     ServerSocket1.Socket.Connections[i].SendText('need date');   //Отправить сообщение клиенту
+     ServerSocket1.Socket.Connections[i].SendText('need date');
 end;
 
-// выыести данные в Edit из БД
+// Свернуть в трей
+procedure TForm1.Button7Click(Sender: TObject);
+begin
+  Form1.Hide;
+end;
+
+// вывести данные в Edit из таблицы Computers
 procedure TForm1.DBLookupComboBox1Click(Sender: TObject);
 begin
   Edit4.Text:=ADOTableComp.FieldByName('MAC_address').AsString;
@@ -155,9 +169,20 @@ begin
   Edit8.Text:=ADOTableComp.FieldByName('IP').AsString;
 end;
 
+// Процедура спрашивает надо ли закрыть программу
+procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+if MessageDlg('Вы действительно ходите закрыть программу?',mtInformation,[mbYes, mbNo],0) = mrYes then
+  CanClose := True
+else
+  CanClose := False;
+end;
+
 // Процедура - при создании формы
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+   TrayIcon1.Visible:=true;
+
    ADOTableComp.Active:=false; ADOTableComp.Active:=true;
    ADOTableLogs.Active:=false; ADOTableLogs.Active:=true;
 
@@ -174,14 +199,14 @@ end;
 procedure TForm1.ServerSocket1ClientConnect(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  Memo1.Lines.Add('['+TimeToStr(Time)+'] Подключился клиент '+Socket.RemoteAddress);
+  Memo1.Lines.Insert(0, '['+TimeToStr(Time)+'] Подключился клиент '+Socket.RemoteAddress);
 end;
 
 // Процедура -  клиент отключился
 procedure TForm1.ServerSocket1ClientDisconnect(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  Memo1.Lines.Add('['+TimeToStr(Time)+'] Клиент отключился '+Socket.RemoteAddress);
+  Memo1.Lines.Insert(0, '['+TimeToStr(Time)+'] Клиент отключился '+Socket.RemoteAddress);
 end;
 
 // Процедура -  при возникновении ошибки
@@ -206,13 +231,19 @@ begin
   XMLDocument1.Active := false; // деактивируем компонент XMLDocument
   StatusBar1.Panels.Items[0].Text:='Data transferred from '+Socket.RemoteAddress;
 
-  //отправляем сообщение в логи
+  //отправляем сообщение в таблицу logs
   ADOQuery1.SQL.Clear;
   str := 'insert logs (NameComputer,IP,MAC_address,AccessTime) values ('''+NameComputer+''','''+Socket.RemoteAddress+''','''+MAC_address+''', now())';
   ADOQuery1.SQL.Add(str);
   ADOQuery1.ExecSQL;
-  ADOTableLogs.close;
-  ADOTableLogs.open;
+  ADOQueryLogs.close;
+  ADOQueryLogs.open;
+end;
+
+// Развернуть программу из трея
+procedure TForm1.TrayIcon1DblClick(Sender: TObject);
+begin
+  Form1.Show;
 end;
 
 end.

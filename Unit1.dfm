@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   ActiveControl = PageControl1
-  Caption = 'Administration program - Server'
+  Caption = 'Network Inventory - Server'
   ClientHeight = 571
   ClientWidth = 797
   Color = clBtnFace
@@ -13,24 +13,28 @@ object Form1: TForm1
   Font.Style = []
   OldCreateOrder = False
   Position = poDesigned
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
     Left = 0
-    Top = 0
+    Top = 23
     Width = 797
-    Height = 571
-    ActivePage = TabSheet6
+    Height = 529
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
+    ExplicitTop = 25
+    ExplicitHeight = 527
     object TabSheet1: TTabSheet
       Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099
+      ExplicitHeight = 543
       object DBGrid1: TDBGrid
         Left = 0
         Top = 0
         Width = 789
-        Height = 312
+        Height = 270
         Align = alClient
         DataSource = DataSourceComp
         TabOrder = 0
@@ -42,11 +46,12 @@ object Form1: TForm1
       end
       object Panel1: TPanel
         Left = 0
-        Top = 312
+        Top = 270
         Width = 789
         Height = 231
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 312
         object PageControl2: TPageControl
           Left = 1
           Top = 1
@@ -264,11 +269,12 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
+      ExplicitHeight = 543
       object DBGrid2: TDBGrid
         Left = 0
         Top = 0
         Width = 789
-        Height = 543
+        Height = 446
         Align = alClient
         DataSource = DataSourceLogs
         TabOrder = 0
@@ -278,44 +284,79 @@ object Form1: TForm1
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
       end
+      object Panel3: TPanel
+        Left = 0
+        Top = 446
+        Width = 789
+        Height = 55
+        Align = alBottom
+        TabOrder = 1
+        ExplicitTop = 488
+        object Button6: TButton
+          Left = 705
+          Top = 14
+          Width = 75
+          Height = 25
+          Caption = #1054#1073#1085#1086#1074#1080#1090#1100
+          TabOrder = 0
+          OnClick = Button6Click
+        end
+      end
     end
     object TabSheet6: TTabSheet
-      Caption = #1057#1077#1088#1074#1077#1088
+      Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
+      ExplicitHeight = 543
       object Panel2: TPanel
         Left = 0
         Top = 0
         Width = 789
-        Height = 543
+        Height = 501
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 543
         object Memo1: TMemo
           Left = 1
-          Top = 0
-          Width = 369
-          Height = 209
-          TabOrder = 0
-        end
-        object StatusBar1: TStatusBar
-          Left = 1
-          Top = 523
+          Top = 1
           Width = 787
-          Height = 19
-          Panels = <
-            item
-              Width = 50
-            end>
-        end
-        object Button6: TButton
-          Left = 9
-          Top = 232
-          Width = 75
-          Height = 25
-          Caption = #1055#1086#1083#1091#1095#1080#1090#1100
-          TabOrder = 2
-          OnClick = Button6Click
+          Height = 209
+          Align = alTop
+          ReadOnly = True
+          TabOrder = 0
+          ExplicitTop = 0
+          ExplicitWidth = 369
         end
       end
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 552
+    Width = 797
+    Height = 19
+    Panels = <
+      item
+        Width = 50
+      end>
+    ExplicitLeft = 1
+    ExplicitTop = 523
+    ExplicitWidth = 787
+  end
+  object Panel4: TPanel
+    Left = 0
+    Top = 0
+    Width = 797
+    Height = 23
+    Align = alTop
+    TabOrder = 2
+    object Button7: TButton
+      Left = 718
+      Top = 2
+      Width = 75
+      Height = 20
+      Caption = #1057#1074#1077#1088#1085#1091#1090#1100
+      TabOrder = 0
+      OnClick = Button7Click
     end
   end
   object ADOConnection1: TADOConnection
@@ -338,7 +379,7 @@ object Form1: TForm1
   end
   object DataSourceComp: TDataSource
     DataSet = ADOTableComp
-    Left = 680
+    Left = 600
     Top = 40
   end
   object ADOTableComp: TADOTable
@@ -346,28 +387,20 @@ object Form1: TForm1
     Connection = ADOConnection1
     CursorType = ctStatic
     TableName = 'computers'
-    Left = 680
+    Left = 600
     Top = 96
   end
   object DataSourceLogs: TDataSource
-    DataSet = ADOTableLogs
-    Left = 600
+    DataSet = ADOQueryLogs
+    Left = 672
     Top = 40
   end
   object ADOTableLogs: TADOTable
-    Active = True
     Connection = ADOConnection1
     CursorType = ctStatic
     TableName = 'logs'
-    Left = 600
+    Left = 736
     Top = 96
-  end
-  object ClientSocket1: TClientSocket
-    Active = False
-    ClientType = ctNonBlocking
-    Port = 0
-    Left = 600
-    Top = 160
   end
   object ServerSocket1: TServerSocket
     Active = True
@@ -381,8 +414,29 @@ object Form1: TForm1
     Top = 160
   end
   object XMLDocument1: TXMLDocument
-    Left = 680
+    Left = 600
     Top = 160
     DOMVendorDesc = 'MSXML'
+  end
+  object ADOQueryLogs: TADOQuery
+    Active = True
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    LockType = ltReadOnly
+    Parameters = <>
+    SQL.Strings = (
+      
+        'select logs.NameComputer, logs.IP, logs.MAC_address, computers.I' +
+        'nventoryNumber, computers.Location, AccessTime'
+      'from logs'
+      'join computers'
+      'on logs.IP=computers.IP;')
+    Left = 672
+    Top = 96
+  end
+  object TrayIcon1: TTrayIcon
+    OnDblClick = TrayIcon1DblClick
+    Left = 672
+    Top = 160
   end
 end
