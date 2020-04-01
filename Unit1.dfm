@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   ActiveControl = PageControl1
   Caption = 'Network Inventory - Server'
-  ClientHeight = 571
+  ClientHeight = 568
   ClientWidth = 797
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,20 +21,19 @@ object Form1: TForm1
     Left = 0
     Top = 23
     Width = 797
-    Height = 529
-    ActivePage = TabSheet1
+    Height = 526
+    ActivePage = TabSheet6
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 25
-    ExplicitHeight = 527
+    ExplicitHeight = 529
     object TabSheet1: TTabSheet
       Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099
-      ExplicitHeight = 543
+      ExplicitHeight = 501
       object DBGrid1: TDBGrid
         Left = 0
         Top = 0
         Width = 789
-        Height = 270
+        Height = 267
         Align = alClient
         DataSource = DataSourceComp
         TabOrder = 0
@@ -46,12 +45,12 @@ object Form1: TForm1
       end
       object Panel1: TPanel
         Left = 0
-        Top = 270
+        Top = 267
         Width = 789
         Height = 231
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 312
+        ExplicitTop = 270
         object PageControl2: TPageControl
           Left = 1
           Top = 1
@@ -269,12 +268,12 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      ExplicitHeight = 543
+      ExplicitHeight = 501
       object DBGrid2: TDBGrid
         Left = 0
         Top = 0
         Width = 789
-        Height = 446
+        Height = 443
         Align = alClient
         DataSource = DataSourceLogs
         TabOrder = 0
@@ -286,61 +285,81 @@ object Form1: TForm1
       end
       object Panel3: TPanel
         Left = 0
-        Top = 446
+        Top = 443
         Width = 789
         Height = 55
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 488
-        object Button6: TButton
+        ExplicitTop = 446
+        object ButtonUpdateLogs: TButton
           Left = 705
-          Top = 14
+          Top = 6
           Width = 75
           Height = 25
           Caption = #1054#1073#1085#1086#1074#1080#1090#1100
           TabOrder = 0
-          OnClick = Button6Click
+          OnClick = ButtonUpdateLogsClick
         end
       end
     end
     object TabSheet6: TTabSheet
       Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
-      ExplicitHeight = 543
+      ExplicitHeight = 501
       object Panel2: TPanel
         Left = 0
         Top = 0
         Width = 789
-        Height = 501
+        Height = 498
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 543
+        ExplicitLeft = -3
+        ExplicitTop = -2
+        ExplicitHeight = 501
         object Memo1: TMemo
           Left = 1
           Top = 1
           Width = 787
-          Height = 209
+          Height = 184
           Align = alTop
           ReadOnly = True
           TabOrder = 0
-          ExplicitTop = 0
-          ExplicitWidth = 369
+          ExplicitLeft = 0
+        end
+        object GroupBoxClientOnline: TGroupBox
+          Left = 0
+          Top = 191
+          Width = 185
+          Height = 273
+          Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099' '#1074' '#1089#1077#1090#1080
+          TabOrder = 1
+          object ListBoxClientOnline: TListBox
+            Left = 2
+            Top = 15
+            Width = 181
+            Height = 256
+            Align = alClient
+            ItemHeight = 13
+            TabOrder = 0
+            ExplicitLeft = 1
+            ExplicitTop = 394
+            ExplicitWidth = 787
+            ExplicitHeight = 106
+          end
         end
       end
     end
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 552
+    Top = 549
     Width = 797
     Height = 19
     Panels = <
       item
         Width = 50
       end>
-    ExplicitLeft = 1
-    ExplicitTop = 523
-    ExplicitWidth = 787
+    ExplicitTop = 552
   end
   object Panel4: TPanel
     Left = 0
@@ -406,6 +425,7 @@ object Form1: TForm1
     Active = True
     Port = 65000
     ServerType = stNonBlocking
+    OnAccept = ServerSocket1Accept
     OnClientConnect = ServerSocket1ClientConnect
     OnClientDisconnect = ServerSocket1ClientDisconnect
     OnClientRead = ServerSocket1ClientRead

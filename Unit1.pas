@@ -57,12 +57,14 @@ type
     Memo1: TMemo;
     StatusBar1: TStatusBar;
     XMLDocument1: TXMLDocument;
-    Button6: TButton;
+    ButtonUpdateLogs: TButton;
     ADOQueryLogs: TADOQuery;
     Panel3: TPanel;
     Panel4: TPanel;
     Button7: TButton;
     TrayIcon1: TTrayIcon;
+    ListBoxClientOnline: TListBox;
+    GroupBoxClientOnline: TGroupBox;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -79,10 +81,11 @@ type
     procedure ServerSocket1ClientError(Sender: TObject;
       Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
       var ErrorCode: Integer);
-    procedure Button6Click(Sender: TObject);
+    procedure ButtonUpdateLogsClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure Button7Click(Sender: TObject);
     procedure TrayIcon1DblClick(Sender: TObject);
+    procedure ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
   private
     { Private declarations }
   public
@@ -91,8 +94,7 @@ type
 
 var
   Form1: TForm1;
-  str:string;
-  NameComputer, MAC_address:string;
+  StrSQL:string;
   i:integer;
 
 implementation
@@ -103,9 +105,9 @@ implementation
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
-  str := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+Edit1.Text+''','''+Edit7.Text+''','+Edit2.Text+','''+
+  StrSQL := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+Edit1.Text+''','''+Edit7.Text+''','+Edit2.Text+','''+
   Edit3.Text+''', now(), now() )'; // вводим запрос
-  ADOQuery1.SQL.Add(str);
+  ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL; // перезапускаем таблицу
   ADOTableComp.close;
   ADOTableComp.open;
@@ -116,9 +118,9 @@ end;
 procedure TForm1.Button2Click(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear;
-  str := 'update computers set MAC_address='''+Edit4.Text+''', IP='''+Edit8.Text+''', InventoryNumber='+
+  StrSQL := 'update computers set MAC_address='''+Edit4.Text+''', IP='''+Edit8.Text+''', InventoryNumber='+
   Edit5.Text+', Location='''+Edit6.Text+''', LastChanges=now() Where  ID='+DBLookupComboBox1.Text; // вводим запрос
-  ADOQuery1.SQL.Add(str);
+  ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
   ADOTableComp.close;
   ADOTableComp.open;
@@ -128,8 +130,8 @@ end;
 procedure TForm1.Button3Click(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear;
-  str:='delete from computers where id='+DBLookupComboBox2.Text;
-  ADOQuery1.SQL.Add(str);
+  StrSQL:='delete from computers where id='+DBLookupComboBox2.Text;
+  ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
   ADOTableComp.close;
   ADOTableComp.open;
@@ -147,11 +149,11 @@ begin
   Edit4.Clear; Edit5.Clear; Edit6.Clear; Edit8.Clear;
 end;
 
-// Отправить сообщения клиентам
-procedure TForm1.Button6Click(Sender: TObject);
+// Отправить сообщения клиентам для обновления списка информации клиентов
+procedure TForm1.ButtonUpdateLogsClick(Sender: TObject);
 begin
   for i :=0 to ServerSocket1.Socket.ActiveConnections - 1 do
-     ServerSocket1.Socket.Connections[i].SendText('need date');
+     ServerSocket1.Socket.Connections[i].SendText('#date#');
 end;
 
 // Свернуть в трей
@@ -181,21 +183,27 @@ end;
 // Процедура - при создании формы
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+   {Иконка программы в трее становится видимой}
    TrayIcon1.Visible:=true;
-
+   {Обновляем таблицы БД}
    ADOTableComp.Active:=false; ADOTableComp.Active:=true;
    ADOTableLogs.Active:=false; ADOTableLogs.Active:=true;
-
-   // --- Создаем сервер---///
-   {ServerSocket1.Port:= 65000; // указываем порт
-   ServerSocket1.Active:=True; // активируем наш сервер }
-   ServerSocket1.Open; // запускаем
-
+   {Запускаем сервер}
+   ServerSocket1.Open;
    if ServerSocket1.Active then
-    Statusbar1.Panels.Items[0].Text:='Active and Open Server 192.168.100.3';
+    Statusbar1.Panels.Items[0].Text:='Active and Open Server';
 end;
 
-// Процедура -  клиент подсоединился
+// Процедура - клиент присоединился
+procedure TForm1.ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
+begin
+  {Какой-то клиент присоединился. Запрашиваем у всех клиентов их имена}
+  ListBoxClientOnline.Items.Clear;
+  for i := 0 to ServerSocket1.Socket.ActiveConnections-1 do
+    ServerSocket1.Socket.Connections[i].SendText('#N');
+end;
+
+// Процедура -  клиент присоединяется
 procedure TForm1.ServerSocket1ClientConnect(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
@@ -207,6 +215,10 @@ procedure TForm1.ServerSocket1ClientDisconnect(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
   Memo1.Lines.Insert(0, '['+TimeToStr(Time)+'] Клиент отключился '+Socket.RemoteAddress);
+  {Какой-то клиент отсоединился. Запрашиваем у всех клиентов их имена}
+  ListBoxClientOnline.Items.Clear;
+  for i := 0 to ServerSocket1.Socket.ActiveConnections-1 do
+    ServerSocket1.Socket.Connections[i].SendText('#N');
 end;
 
 // Процедура -  при возникновении ошибки
@@ -216,28 +228,57 @@ begin
   ErrorCode:=0;
 end;
 
-// Процедура - клиент передал cерверу какие-либо данные
+// Процедура - cервер читает данные клиентов
 procedure TForm1.ServerSocket1ClientRead(Sender: TObject;
   Socket: TCustomWinSocket);
+var
+  s:string;
+  NameClient, NameComputer, MAC_address:string;
 begin
   //Memo1.Lines.Add(Socket.ReceiveText);  // получить сообщение от клиента
-  XMLDocument1.XML.Text:=Socket.ReceiveText; // отправить сообщение клиента компоненту XMLDocument
-  XMLDocument1.Active := true; // активируем компонент XMLDocument
-
-  // расшифровываем сообщение клиента
-  NameComputer := XMLDocument1.DocumentElement.ChildNodes['NameComputer'].Text;
-  MAC_address := XMLDocument1.DocumentElement.ChildNodes['MAC_address'].Text;
-
-  XMLDocument1.Active := false; // деактивируем компонент XMLDocument
+  s := Socket.ReceiveText;
   StatusBar1.Panels.Items[0].Text:='Data transferred from '+Socket.RemoteAddress;
 
-  //отправляем сообщение в таблицу logs
-  ADOQuery1.SQL.Clear;
-  str := 'insert logs (NameComputer,IP,MAC_address,AccessTime) values ('''+NameComputer+''','''+Socket.RemoteAddress+''','''+MAC_address+''', now())';
-  ADOQuery1.SQL.Add(str);
-  ADOQuery1.ExecSQL;
-  ADOQueryLogs.close;
-  ADOQueryLogs.open;
+  {Какой-то клиент прислал серверу свое имя}
+  if Copy(s,1,2) = '#N' then
+  begin
+    Delete(s,1,2);
+    {добавляем имя клиента в листбокс}
+    ListBoxClientOnline.Items.Add(s);
+    {отправляем имена клиентов из листбокса всем клиентам}
+    NameClient := '#U';
+    for i := 0 to ListBoxClientOnline.Items.Count-1 do
+      NameClient := NameClient+ListBoxClientOnline.Items[i]+';';
+    for i := 0 to ServerSocket1.Socket.ActiveConnections-1 do
+      ServerSocket1.Socket.Connections[i].SendText(NameClient);
+    Exit;
+  end;
+
+  {Если кто-то кинул сообщение - рассылаем его всем клиентам}
+  if Copy(s,1,2) = '#P' then
+  begin
+    for i := 0 to ServerSocket1.Socket.ActiveConnections-1 do
+      ServerSocket1.Socket.Connections[i].SendText(s);
+    Exit;
+  end;
+
+  {XML сообщения клиентов}
+  if Copy(s,1,11) = '<computers>' then
+  begin
+    XMLDocument1.XML.Text := s;
+    XMLDocument1.Active := true;
+    {расшифровываем сообщение клиента}
+    NameComputer := XMLDocument1.DocumentElement.ChildNodes['NameComputer'].Text;
+    MAC_address := XMLDocument1.DocumentElement.ChildNodes['MAC_address'].Text;
+    XMLDocument1.Active := false;
+    {отправляем сообщение в таблицу logs}
+    ADOQuery1.SQL.Clear;
+    StrSQL := 'insert logs (NameComputer,IP,MAC_address,AccessTime) values ('''+NameComputer+''','''+Socket.RemoteAddress+''','''+MAC_address+''', now())';
+    ADOQuery1.SQL.Add(StrSQL);
+    ADOQuery1.ExecSQL;
+    ADOQueryLogs.close;
+    ADOQueryLogs.open;
+  end;
 end;
 
 // Развернуть программу из трея
