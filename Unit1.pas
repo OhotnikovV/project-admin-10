@@ -233,7 +233,7 @@ procedure TForm1.ServerSocket1ClientRead(Sender: TObject;
   Socket: TCustomWinSocket);
 var
   s:string;
-  NameClient, NameComputer, MAC_address:string;
+  NameClient, NameComputer, IP_address, MAC_address:string;
 begin
   //Memo1.Lines.Add(Socket.ReceiveText);  // получить сообщение от клиента
   s := Socket.ReceiveText;
@@ -269,11 +269,12 @@ begin
     XMLDocument1.Active := true;
     {расшифровываем сообщение клиента}
     NameComputer := XMLDocument1.DocumentElement.ChildNodes['NameComputer'].Text;
+    IP_address:=  XMLDocument1.DocumentElement.ChildNodes['IP_address'].Text;
     MAC_address := XMLDocument1.DocumentElement.ChildNodes['MAC_address'].Text;
     XMLDocument1.Active := false;
     {отправляем сообщение в таблицу logs}
     ADOQuery1.SQL.Clear;
-    StrSQL := 'insert logs (NameComputer,IP,MAC_address,AccessTime) values ('''+NameComputer+''','''+Socket.RemoteAddress+''','''+MAC_address+''', now())';
+    StrSQL := 'insert logs (NameComputer,IP,MAC_address,AccessTime) values ('''+NameComputer+''','''+IP_address+''','''+MAC_address+''', now())';
     ADOQuery1.SQL.Add(StrSQL);
     ADOQuery1.ExecSQL;
     ADOQueryLogs.close;

@@ -25,10 +25,8 @@ object Form1: TForm1
     ActivePage = TabSheet6
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 529
     object TabSheet1: TTabSheet
       Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099
-      ExplicitHeight = 501
       object DBGrid1: TDBGrid
         Left = 0
         Top = 0
@@ -50,7 +48,6 @@ object Form1: TForm1
         Height = 231
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 270
         object PageControl2: TPageControl
           Left = 1
           Top = 1
@@ -268,7 +265,6 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      ExplicitHeight = 501
       object DBGrid2: TDBGrid
         Left = 0
         Top = 0
@@ -290,7 +286,6 @@ object Form1: TForm1
         Height = 55
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 446
         object ButtonUpdateLogs: TButton
           Left = 705
           Top = 6
@@ -305,7 +300,6 @@ object Form1: TForm1
     object TabSheet6: TTabSheet
       Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
-      ExplicitHeight = 501
       object Panel2: TPanel
         Left = 0
         Top = 0
@@ -313,9 +307,6 @@ object Form1: TForm1
         Height = 498
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = -3
-        ExplicitTop = -2
-        ExplicitHeight = 501
         object Memo1: TMemo
           Left = 1
           Top = 1
@@ -324,7 +315,6 @@ object Form1: TForm1
           Align = alTop
           ReadOnly = True
           TabOrder = 0
-          ExplicitLeft = 0
         end
         object GroupBoxClientOnline: TGroupBox
           Left = 0
@@ -341,10 +331,6 @@ object Form1: TForm1
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
-            ExplicitLeft = 1
-            ExplicitTop = 394
-            ExplicitWidth = 787
-            ExplicitHeight = 106
           end
         end
       end
@@ -359,7 +345,6 @@ object Form1: TForm1
       item
         Width = 50
       end>
-    ExplicitTop = 552
   end
   object Panel4: TPanel
     Left = 0
