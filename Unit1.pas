@@ -13,65 +13,65 @@ type
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
-    DBGrid1: TDBGrid;
+    DBGridComputers: TDBGrid;
     DBGrid2: TDBGrid;
     ADOConnection1: TADOConnection;
     ADOQuery1: TADOQuery;
     DataSourceComp: TDataSource;
     ADOTableComp: TADOTable;
     DataSourceLogs: TDataSource;
-    ADOTableLogs: TADOTable;
-    Panel1: TPanel;
+    PanelComputers: TPanel;
     PageControl2: TPageControl;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     TabSheet5: TTabSheet;
-    Edit1: TEdit;
-    Edit2: TEdit;
-    Edit3: TEdit;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Button1: TButton;
-    Edit4: TEdit;
-    Edit5: TEdit;
-    Edit6: TEdit;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Button2: TButton;
-    Label7: TLabel;
-    DBLookupComboBox1: TDBLookupComboBox;
-    DBLookupComboBox2: TDBLookupComboBox;
-    Button3: TButton;
-    Edit7: TEdit;
-    Label8: TLabel;
-    Edit8: TEdit;
-    Label9: TLabel;
-    Label10: TLabel;
-    Button4: TButton;
-    Button5: TButton;
+    EditMAC: TEdit;
+    EditNumber: TEdit;
+    EditLocation: TEdit;
+    LabelMAC: TLabel;
+    LabelNumber: TLabel;
+    LabelLocation: TLabel;
+    ButtonAddStrings: TButton;
+    EditMAC2: TEdit;
+    EditNumber2: TEdit;
+    EditLocation2: TEdit;
+    LabelMAC2: TLabel;
+    LabelNumber2: TLabel;
+    LabelLocation2: TLabel;
+    ButtonChange: TButton;
+    LabelID2: TLabel;
+    DBLookupComboBoxID2: TDBLookupComboBox;
+    DBLookupComboBoxID3: TDBLookupComboBox;
+    ButtonDelete: TButton;
+    EditIP: TEdit;
+    LabelIP: TLabel;
+    EditIP2: TEdit;
+    LabelIP2: TLabel;
+    LabelID3: TLabel;
+    ButtonClearStrings: TButton;
+    ButtonClear2: TButton;
     ServerSocket1: TServerSocket;
     TabSheet6: TTabSheet;
-    Panel2: TPanel;
-    Memo1: TMemo;
+    PanelStatus: TPanel;
+    MemoStatusSockets: TMemo;
     StatusBar1: TStatusBar;
     XMLDocument1: TXMLDocument;
     ButtonUpdateLogs: TButton;
     ADOQueryLogs: TADOQuery;
-    Panel3: TPanel;
-    Panel4: TPanel;
-    Button7: TButton;
+    PanelLogs: TPanel;
+    PanelMenu: TPanel;
+    ButtonTray: TButton;
     TrayIcon1: TTrayIcon;
     ListBoxClientOnline: TListBox;
     GroupBoxClientOnline: TGroupBox;
-    procedure Button1Click(Sender: TObject);
+    GroupBoxStatusSockets: TGroupBox;
+    procedure ButtonAddStringsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure DBLookupComboBox1Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
+    procedure ButtonChangeClick(Sender: TObject);
+    procedure DBLookupComboBoxID2Click(Sender: TObject);
+    procedure ButtonDeleteClick(Sender: TObject);
+    procedure ButtonClearStringsClick(Sender: TObject);
+    procedure ButtonClear2Click(Sender: TObject);
     procedure ServerSocket1ClientRead(Sender: TObject;
       Socket: TCustomWinSocket);
     procedure ServerSocket1ClientConnect(Sender: TObject;
@@ -83,7 +83,7 @@ type
       var ErrorCode: Integer);
     procedure ButtonUpdateLogsClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure Button7Click(Sender: TObject);
+    procedure ButtonTrayClick(Sender: TObject);
     procedure TrayIcon1DblClick(Sender: TObject);
     procedure ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
   private
@@ -102,82 +102,82 @@ implementation
 {$R *.dfm}
 
 // добавить запись в таблице Computers
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.ButtonAddStringsClick(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
-  StrSQL := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+Edit1.Text+''','''+Edit7.Text+''','+Edit2.Text+','''+
-  Edit3.Text+''', now(), now() )'; // вводим запрос
+  StrSQL := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+EditMAC.Text+''','''+EditIP.Text+''','+EditNumber.Text+','''+
+  EditLocation.Text+''', now(), now() )'; // вводим запрос
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL; // перезапускаем таблицу
-  ADOTableComp.close;
-  ADOTableComp.open;
-  Edit1.Clear; Edit2.Clear; Edit3.Clear; Edit7.Clear;
+  ADOTableComp.Close;
+  ADOTableComp.Open;
+  EditMAC.Clear; EditIP.Clear; EditNumber.Clear; EditLocation.Clear;
 end;
 
 // обновить запись в таблице Computers
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TForm1.ButtonChangeClick(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear;
-  StrSQL := 'update computers set MAC_address='''+Edit4.Text+''', IP='''+Edit8.Text+''', InventoryNumber='+
-  Edit5.Text+', Location='''+Edit6.Text+''', LastChanges=now() Where  ID='+DBLookupComboBox1.Text; // вводим запрос
+  StrSQL := 'update computers set MAC_address='''+EditMAC2.Text+''', IP='''+EditIP2.Text+''', InventoryNumber='+
+  EditNumber2.Text+', Location='''+EditLocation2.Text+''', LastChanges=now() Where  ID='+DBLookupComboBoxID2.Text; // вводим запрос
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
-  ADOTableComp.close;
-  ADOTableComp.open;
+  ADOTableComp.Close;
+  ADOTableComp.Open;
 end;
 
 // удалить запись в таблице Computers
-procedure TForm1.Button3Click(Sender: TObject);
+procedure TForm1.ButtonDeleteClick(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear;
-  StrSQL:='delete from computers where id='+DBLookupComboBox2.Text;
+  StrSQL:='delete from computers where id='+DBLookupComboBoxID3.Text;
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
-  ADOTableComp.close;
-  ADOTableComp.open;
+  ADOTableComp.Close;
+  ADOTableComp.Open;
 end;
 
 // Очистить запись в Edit
-procedure TForm1.Button4Click(Sender: TObject);
+procedure TForm1.ButtonClearStringsClick(Sender: TObject);
 begin
-  Edit1.Clear; Edit2.Clear; Edit3.Clear; Edit7.Clear;
+  EditMAC.Clear; EditIP.Clear; EditNumber.Clear; Editlocation.Clear;
 end;
 
 // Очистить запись в Edit
-procedure TForm1.Button5Click(Sender: TObject);
+procedure TForm1.ButtonClear2Click(Sender: TObject);
 begin
-  Edit4.Clear; Edit5.Clear; Edit6.Clear; Edit8.Clear;
+  EditMAC2.Clear; EditIP2.Clear; EditNumber2.Clear; EditLocation2.Clear;
 end;
 
 // Отправить сообщения клиентам для обновления списка информации клиентов
 procedure TForm1.ButtonUpdateLogsClick(Sender: TObject);
 begin
-  for i :=0 to ServerSocket1.Socket.ActiveConnections - 1 do
+  for i := 0 to ServerSocket1.Socket.ActiveConnections - 1 do
      ServerSocket1.Socket.Connections[i].SendText('#date#');
 end;
 
 // Свернуть в трей
-procedure TForm1.Button7Click(Sender: TObject);
+procedure TForm1.ButtonTrayClick(Sender: TObject);
 begin
   Form1.Hide;
 end;
 
 // вывести данные в Edit из таблицы Computers
-procedure TForm1.DBLookupComboBox1Click(Sender: TObject);
+procedure TForm1.DBLookupComboBoxID2Click(Sender: TObject);
 begin
-  Edit4.Text:=ADOTableComp.FieldByName('MAC_address').AsString;
-  Edit5.Text:=ADOTableComp.FieldByName('InventoryNumber').AsString;
-  Edit6.Text:=ADOTableComp.FieldByName('Location').AsString;
-  Edit8.Text:=ADOTableComp.FieldByName('IP').AsString;
+  EditMAC2.Text := ADOTableComp.FieldByName('MAC_address').AsString;
+  EditNumber2.Text := ADOTableComp.FieldByName('InventoryNumber').AsString;
+  EditLocation2.Text := ADOTableComp.FieldByName('Location').AsString;
+  EditIP2.Text := ADOTableComp.FieldByName('IP').AsString;
 end;
 
 // Процедура спрашивает надо ли закрыть программу
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-if MessageDlg('Вы действительно ходите закрыть программу?',mtInformation,[mbYes, mbNo],0) = mrYes then
-  CanClose := True
-else
-  CanClose := False;
+  if MessageDlg('Вы действительно ходите закрыть программу?',mtInformation,[mbYes, mbNo],0) = mrYes then
+    CanClose := True
+  else
+    CanClose := False;
 end;
 
 // Процедура - при создании формы
@@ -186,12 +186,12 @@ begin
    {Иконка программы в трее становится видимой}
    TrayIcon1.Visible:=true;
    {Обновляем таблицы БД}
-   ADOTableComp.Active:=false; ADOTableComp.Active:=true;
-   ADOTableLogs.Active:=false; ADOTableLogs.Active:=true;
+   ADOTableComp.Active := False; ADOTableComp.Active := True;
+   ADOQueryLogs.Active := False; ADOQueryLogs.Active := True;
    {Запускаем сервер}
    ServerSocket1.Open;
    if ServerSocket1.Active then
-    Statusbar1.Panels.Items[0].Text:='Active and Open Server';
+     Statusbar1.Panels.Items[0].Text := 'Active and Open Server';
 end;
 
 // Процедура - клиент присоединился
@@ -207,14 +207,14 @@ end;
 procedure TForm1.ServerSocket1ClientConnect(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  Memo1.Lines.Insert(0, '['+TimeToStr(Time)+'] Подключился клиент '+Socket.RemoteAddress);
+  MemoStatusSockets.Lines.Insert(0, '['+TimeToStr(Time)+'] Подключился клиент '+Socket.RemoteAddress);
 end;
 
 // Процедура -  клиент отключился
 procedure TForm1.ServerSocket1ClientDisconnect(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  Memo1.Lines.Insert(0, '['+TimeToStr(Time)+'] Клиент отключился '+Socket.RemoteAddress);
+  MemoStatusSockets.Lines.Insert(0, '['+TimeToStr(Time)+'] Клиент отключился '+Socket.RemoteAddress);
   {Какой-то клиент отсоединился. Запрашиваем у всех клиентов их имена}
   ListBoxClientOnline.Items.Clear;
   for i := 0 to ServerSocket1.Socket.ActiveConnections-1 do
@@ -235,6 +235,7 @@ var
   s:string;
   NameClient, NameComputer, IP_address, MAC_address:string;
 begin
+  s := '';
   //Memo1.Lines.Add(Socket.ReceiveText);  // получить сообщение от клиента
   s := Socket.ReceiveText;
   StatusBar1.Panels.Items[0].Text:='Data transferred from '+Socket.RemoteAddress;
@@ -277,8 +278,8 @@ begin
     StrSQL := 'insert logs (NameComputer,IP,MAC_address,AccessTime) values ('''+NameComputer+''','''+IP_address+''','''+MAC_address+''', now())';
     ADOQuery1.SQL.Add(StrSQL);
     ADOQuery1.ExecSQL;
-    ADOQueryLogs.close;
-    ADOQueryLogs.open;
+    ADOQueryLogs.Close;
+    ADOQueryLogs.Open;
   end;
 end;
 

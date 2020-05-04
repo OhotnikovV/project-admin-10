@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   ActiveControl = PageControl1
-  Caption = 'Network Inventory - Server'
-  ClientHeight = 568
+  Caption = 'Network Administration'
+  ClientHeight = 496
   ClientWidth = 797
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,17 +21,21 @@ object Form1: TForm1
     Left = 0
     Top = 23
     Width = 797
-    Height = 526
-    ActivePage = TabSheet6
+    Height = 454
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
+    ExplicitLeft = 8
+    ExplicitTop = 17
+    ExplicitHeight = 483
     object TabSheet1: TTabSheet
       Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099
-      object DBGrid1: TDBGrid
+      ExplicitHeight = 455
+      object DBGridComputers: TDBGrid
         Left = 0
         Top = 0
         Width = 789
-        Height = 267
+        Height = 213
         Align = alClient
         DataSource = DataSourceComp
         TabOrder = 0
@@ -41,167 +45,170 @@ object Form1: TForm1
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
       end
-      object Panel1: TPanel
+      object PanelComputers: TPanel
         Left = 0
-        Top = 267
+        Top = 213
         Width = 789
-        Height = 231
+        Height = 213
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 242
         object PageControl2: TPageControl
           Left = 1
           Top = 1
           Width = 787
-          Height = 229
-          ActivePage = TabSheet3
+          Height = 211
+          ActivePage = TabSheet5
           Align = alClient
           TabOrder = 0
           object TabSheet3: TTabSheet
             Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-            object Label1: TLabel
+            ExplicitLeft = 0
+            ExplicitTop = 27
+            object LabelMAC: TLabel
               Left = 11
               Top = 3
               Width = 60
               Height = 13
               Caption = 'MAC-'#1072#1076#1088#1077#1089':'
             end
-            object Label2: TLabel
+            object LabelNumber: TLabel
               Left = 147
               Top = 3
               Width = 106
               Height = 13
               Caption = #1048#1085#1074#1077#1085#1090#1072#1088#1085#1099#1081' '#1085#1086#1084#1077#1088':'
             end
-            object Label3: TLabel
+            object LabelLocation: TLabel
               Left = 147
               Top = 49
               Width = 77
               Height = 13
               Caption = #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077':'
             end
-            object Label8: TLabel
+            object LabelIP: TLabel
               Left = 11
               Top = 49
               Width = 48
               Height = 13
               Caption = 'IP-'#1072#1076#1088#1077#1089':'
             end
-            object Edit1: TEdit
+            object EditMAC: TEdit
               Left = 11
               Top = 22
               Width = 121
               Height = 21
               TabOrder = 0
             end
-            object Edit3: TEdit
+            object EditLocation: TEdit
               Left = 147
               Top = 68
               Width = 121
               Height = 21
               TabOrder = 1
             end
-            object Edit2: TEdit
+            object EditNumber: TEdit
               Left = 147
               Top = 22
               Width = 121
               Height = 21
               TabOrder = 2
             end
-            object Button1: TButton
+            object ButtonAddStrings: TButton
               Left = 11
               Top = 104
               Width = 75
               Height = 25
               Caption = #1044#1086#1073#1072#1074#1080#1090#1100
               TabOrder = 3
-              OnClick = Button1Click
+              OnClick = ButtonAddStringsClick
             end
-            object Edit7: TEdit
+            object EditIP: TEdit
               Left = 11
               Top = 68
               Width = 121
               Height = 21
               TabOrder = 4
             end
-            object Button4: TButton
+            object ButtonClearStrings: TButton
               Left = 92
               Top = 104
               Width = 75
               Height = 25
               Caption = #1054#1095#1080#1089#1090#1080#1090#1100
               TabOrder = 5
-              OnClick = Button4Click
+              OnClick = ButtonClearStringsClick
             end
           end
           object TabSheet4: TTabSheet
             Caption = #1048#1079#1084#1077#1085#1080#1090#1100
             ImageIndex = 1
-            object Label4: TLabel
+            object LabelMAC2: TLabel
               Left = 11
               Top = 49
               Width = 60
               Height = 13
               Caption = 'MAC-'#1072#1076#1088#1077#1089':'
             end
-            object Label5: TLabel
+            object LabelNumber2: TLabel
               Left = 146
               Top = 49
               Width = 106
               Height = 13
               Caption = #1048#1085#1074#1077#1085#1090#1072#1088#1085#1099#1081' '#1085#1086#1084#1077#1088':'
             end
-            object Label6: TLabel
+            object LabelLocation2: TLabel
               Left = 146
               Top = 95
               Width = 77
               Height = 13
               Caption = #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077':'
             end
-            object Label7: TLabel
+            object LabelID2: TLabel
               Left = 11
               Top = 3
               Width = 52
               Height = 13
               Caption = 'ID '#1079#1072#1087#1080#1089#1080':'
             end
-            object Label9: TLabel
+            object LabelIP2: TLabel
               Left = 11
               Top = 95
               Width = 48
               Height = 13
               Caption = 'IP-'#1072#1076#1088#1077#1089':'
             end
-            object Edit4: TEdit
+            object EditMAC2: TEdit
               Left = 11
               Top = 68
               Width = 121
               Height = 21
               TabOrder = 0
             end
-            object Edit5: TEdit
+            object EditNumber2: TEdit
               Left = 146
               Top = 68
               Width = 121
               Height = 21
               TabOrder = 1
             end
-            object Edit6: TEdit
+            object EditLocation2: TEdit
               Left = 146
               Top = 114
               Width = 121
               Height = 21
               TabOrder = 2
             end
-            object Button2: TButton
+            object ButtonChange: TButton
               Left = 11
               Top = 149
               Width = 75
               Height = 25
               Caption = #1048#1079#1084#1077#1085#1080#1090#1100
               TabOrder = 3
-              OnClick = Button2Click
+              OnClick = ButtonChangeClick
             end
-            object DBLookupComboBox1: TDBLookupComboBox
+            object DBLookupComboBoxID2: TDBLookupComboBox
               Left = 11
               Top = 22
               Width = 121
@@ -210,36 +217,36 @@ object Form1: TForm1
               ListField = 'id'
               ListSource = DataSourceComp
               TabOrder = 4
-              OnClick = DBLookupComboBox1Click
+              OnClick = DBLookupComboBoxID2Click
             end
-            object Edit8: TEdit
+            object EditIP2: TEdit
               Left = 11
               Top = 114
               Width = 121
               Height = 21
               TabOrder = 5
             end
-            object Button5: TButton
+            object ButtonClear2: TButton
               Left = 92
               Top = 149
               Width = 75
               Height = 25
               Caption = #1054#1095#1080#1089#1090#1080#1090#1100
               TabOrder = 6
-              OnClick = Button5Click
+              OnClick = ButtonClear2Click
             end
           end
           object TabSheet5: TTabSheet
             Caption = #1059#1076#1072#1083#1080#1090#1100
             ImageIndex = 2
-            object Label10: TLabel
+            object LabelID3: TLabel
               Left = 11
               Top = 3
               Width = 52
               Height = 13
               Caption = 'ID '#1079#1072#1087#1080#1089#1080':'
             end
-            object DBLookupComboBox2: TDBLookupComboBox
+            object DBLookupComboBoxID3: TDBLookupComboBox
               Left = 11
               Top = 22
               Width = 145
@@ -249,14 +256,14 @@ object Form1: TForm1
               ListSource = DataSourceComp
               TabOrder = 0
             end
-            object Button3: TButton
+            object ButtonDelete: TButton
               Left = 11
               Top = 56
               Width = 75
               Height = 25
               Caption = #1059#1076#1072#1083#1080#1090#1100
               TabOrder = 1
-              OnClick = Button3Click
+              OnClick = ButtonDeleteClick
             end
           end
         end
@@ -265,11 +272,12 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
+      ExplicitHeight = 455
       object DBGrid2: TDBGrid
         Left = 0
         Top = 0
         Width = 789
-        Height = 443
+        Height = 371
         Align = alClient
         DataSource = DataSourceLogs
         TabOrder = 0
@@ -279,16 +287,17 @@ object Form1: TForm1
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
       end
-      object Panel3: TPanel
+      object PanelLogs: TPanel
         Left = 0
-        Top = 443
+        Top = 371
         Width = 789
         Height = 55
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 398
         object ButtonUpdateLogs: TButton
-          Left = 705
-          Top = 6
+          Left = 696
+          Top = 14
           Width = 75
           Height = 25
           Caption = #1054#1073#1085#1086#1074#1080#1090#1100
@@ -300,37 +309,58 @@ object Form1: TForm1
     object TabSheet6: TTabSheet
       Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
-      object Panel2: TPanel
+      ExplicitHeight = 455
+      object PanelStatus: TPanel
         Left = 0
         Top = 0
         Width = 789
-        Height = 498
+        Height = 426
         Align = alClient
         TabOrder = 0
-        object Memo1: TMemo
-          Left = 1
-          Top = 1
-          Width = 787
-          Height = 184
-          Align = alTop
-          ReadOnly = True
-          TabOrder = 0
-        end
+        ExplicitHeight = 455
         object GroupBoxClientOnline: TGroupBox
-          Left = 0
-          Top = 191
-          Width = 185
-          Height = 273
+          Left = 1
+          Top = 201
+          Width = 787
+          Height = 224
+          Align = alClient
           Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099' '#1074' '#1089#1077#1090#1080
-          TabOrder = 1
+          TabOrder = 0
+          ExplicitTop = 207
+          ExplicitWidth = 776
           object ListBoxClientOnline: TListBox
             Left = 2
             Top = 15
-            Width = 181
-            Height = 256
+            Width = 783
+            Height = 207
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
+            ExplicitLeft = 3
+            ExplicitTop = 16
+          end
+        end
+        object GroupBoxStatusSockets: TGroupBox
+          Left = 1
+          Top = 1
+          Width = 787
+          Height = 200
+          Align = alTop
+          Caption = #1057#1090#1072#1090#1091#1089' '#1088#1072#1073#1086#1090#1099' '#1089#1086#1082#1077#1090#1086#1074
+          TabOrder = 1
+          ExplicitLeft = 3
+          ExplicitTop = -5
+          object MemoStatusSockets: TMemo
+            Left = 2
+            Top = 15
+            Width = 783
+            Height = 183
+            Align = alClient
+            ReadOnly = True
+            TabOrder = 0
+            ExplicitTop = -79
+            ExplicitWidth = 181
+            ExplicitHeight = 184
           end
         end
       end
@@ -338,38 +368,39 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 549
+    Top = 477
     Width = 797
     Height = 19
     Panels = <
       item
         Width = 50
       end>
+    ExplicitTop = 506
   end
-  object Panel4: TPanel
+  object PanelMenu: TPanel
     Left = 0
     Top = 0
     Width = 797
     Height = 23
     Align = alTop
     TabOrder = 2
-    object Button7: TButton
+    object ButtonTray: TButton
       Left = 718
       Top = 2
       Width = 75
       Height = 20
       Caption = #1057#1074#1077#1088#1085#1091#1090#1100
       TabOrder = 0
-      OnClick = Button7Click
+      OnClick = ButtonTrayClick
     end
   end
   object ADOConnection1: TADOConnection
     Connected = True
     ConnectionString = 
-      'Provider=MSDASQL.1;Password=1234;Persist Security Info=True;User' +
-      ' ID=root;Extended Properties="Driver=MySQL ODBC 8.0 ANSI Driver;' +
-      'SERVER=localhost;UID=root;PWD=1234;DATABASE=inventory;PORT=3306;' +
-      'COLUMN_SIZE_S32=1";Initial Catalog=inventory'
+      'Provider=MSDASQL.1;Password=qwerty;Persist Security Info=True;Us' +
+      'er ID=anetwork;Extended Properties="Driver=MySQL ODBC 8.0 ANSI D' +
+      'river;SERVER=localhost;UID=anetwork;PWD=qwerty;DATABASE=inventor' +
+      'y;PORT=3306;COLUMN_SIZE_S32=1";Initial Catalog=inventory'
     LoginPrompt = False
     Left = 528
     Top = 40
@@ -398,13 +429,6 @@ object Form1: TForm1
     DataSet = ADOQueryLogs
     Left = 672
     Top = 40
-  end
-  object ADOTableLogs: TADOTable
-    Connection = ADOConnection1
-    CursorType = ctStatic
-    TableName = 'logs'
-    Left = 736
-    Top = 96
   end
   object ServerSocket1: TServerSocket
     Active = True
@@ -435,7 +459,7 @@ object Form1: TForm1
         'nventoryNumber, computers.Location, AccessTime'
       'from logs'
       'join computers'
-      'on logs.IP=computers.IP;')
+      'on logs.MAC_address=computers.MAC_address;')
     Left = 672
     Top = 96
   end
