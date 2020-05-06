@@ -97,6 +97,7 @@ type
     procedure TrayIcon1DblClick(Sender: TObject);
     procedure ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
     procedure Button1Click(Sender: TObject);
+    procedure CreateDataBase;
   private
     { Private declarations }
   public
@@ -119,40 +120,61 @@ var
 begin
   {проверяем существует ли файл, если сущестувует - то находим}
   try
+  ADOConnection1.Connected:=False;
   Ini:=TIniFile.Create(ExtractFilePath(ParamStr(0))+'config.ini');
-  //Ini.WriteString('ADOConnection','ConnectionString','Provider=MSDASQL.1;Password='+EditPwd.Text+';Persist Security Info=True;User ID='+EditLogin.Text+';Extended Properties="DRIVER={MySQL ODBC 8.0 ANSI Driver};UID='+EditLogin.Text+';PWD='+EditPwd.Text+';SERVER='+EditServer.Text+';PORT='+EditPort.Text+';COLUMN_SIZE_S32=1;"');
   Ini.WriteString('ADOConnection','ConnectionString','Provider=MSDASQL.1;Password='+EditPwd.Text+';Persist Security Info=True;User ID='+EditLogin.Text+';Extended Properties="DRIVER={MySQL ODBC 8.0 ANSI Driver};UID='+EditLogin.Text+';PWD='+EditPwd.Text+';SERVER='+EditServer.Text+';DATABASE=network_db;PORT='+EditPort.Text+';COLUMN_SIZE_S32=1;";Initial Catalog=network_db');
   ADOConnection1.ConnectionString:=Ini.ReadString('ADOConnection','ConnectionString','');
   Ini.Free;
   ADOConnection1.Connected:=True;
   ADOQueryComputers.Open;
   ADOQueryLogs.Open;
-  Button1.Enabled := False;
+  //Button1.Enabled := False;
   if ADOConnection1.Connected=True then
-    Statusbar1.Panels.Items[0].Text := 'Databases connected';
+    Statusbar1.Panels.Items[0].Text := 'Database connected';
   except
-    ADOQuery1.SQL.Clear;
-    StrSQL := 'create database network_DB;';
-    ADOQuery1.SQL.Add(StrSQL);
-    ADOQuery1.ExecSQL;
-    ADOQuery1.SQL.Clear;
-    StrSQL := 'use network_DB;';
-    ADOQuery1.SQL.Add(StrSQL);
-    ADOQuery1.ExecSQL;
-    ADOQuery1.SQL.Clear;
-    StrSQL := 'create table computers (id int primary key auto_increment, MAC_address varchar(20) not null, IP varchar(20) not null, InventoryNumber int not null, Location varchar(20) not null, DateOfCreation datetime not null, LastChanges datetime not null);';
-    ADOQuery1.SQL.Add(StrSQL);
-    ADOQuery1.ExecSQL;
-    ADOQuery1.SQL.Clear;
-    StrSQL := 'create table logs (NameComputer varchar(20) not null, IP varchar(20) not null, MAC_address varchar(20) not null, AccessTime time not null);';
-    ADOQuery1.SQL.Add(StrSQL);
-    ADOQuery1.ExecSQL;
+    ShowMessage('База данных не обнаружена. Идет процесс создания БД.');
+    CreateDataBase;
+  end;
+end;
+
+procedure TForm1.CreateDataBase;
+var
+  Ini: TIniFile;
+begin
+  try
+  ADOConnection1.Connected:=False;
+  Ini:=TIniFile.Create(ExtractFilePath(ParamStr(0))+'config.ini');
+  Ini.WriteString('ADOConnection','ConnectionString','Provider=MSDASQL.1;Password='+EditPwd.Text+';Persist Security Info=True;User ID='+EditLogin.Text+';Extended Properties="DRIVER={MySQL ODBC 8.0 ANSI Driver};UID='+EditLogin.Text+';PWD='+EditPwd.Text+';SERVER='+EditServer.Text+';PORT='+EditPort.Text+';COLUMN_SIZE_S32=1;"');
+  ADOConnection1.ConnectionString:=Ini.ReadString('ADOConnection','ConnectionString','');
+  Ini.Free;
+  ADOConnection1.Connected:=True;
+  ADOQuery1.SQL.Clear;
+  StrSQL := 'create database network_DB;';
+  ADOQuery1.SQL.Add(StrSQL);
+  ADOQuery1.ExecSQL;
+  ADOQuery1.SQL.Clear;
+  StrSQL := 'use network_DB;';
+  ADOQuery1.SQL.Add(StrSQL);
+  ADOQuery1.ExecSQL;
+  ADOQuery1.SQL.Clear;
+  StrSQL := 'create table computers (id int primary key auto_increment, MAC_address varchar(20) not null, IP varchar(20) not null, InventoryNumber int not null, Location varchar(20) not null, DateOfCreation datetime not null, LastChanges datetime not null);';
+  ADOQuery1.SQL.Add(StrSQL);
+  ADOQuery1.ExecSQL;
+  ADOQuery1.SQL.Clear;
+  StrSQL := 'create table logs (NameComputer varchar(20) not null, IP varchar(20) not null, MAC_address varchar(20) not null, AccessTime time not null);';
+  ADOQuery1.SQL.Add(StrSQL);
+  ADOQuery1.ExecSQL;
+  if ADOConnection1.Connected=True then
+    Statusbar1.Panels.Items[0].Text := 'Database created';
+  except
+    ShowMessage('База данных уже создана!');
   end;
 end;
 
 // добавить запись в таблице Computers
 procedure TForm1.ButtonAddStringsClick(Sender: TObject);
 begin
+  try
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
   StrSQL := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+EditMAC.Text+''','''+EditIP.Text+''','+EditNumber.Text+','''+
   EditLocation.Text+''', now(), now() )'; // вводим запрос
@@ -161,6 +183,9 @@ begin
   ADOQueryComputers.Close;
   ADOQueryComputers.Open;
   EditMAC.Clear; EditIP.Clear; EditNumber.Clear; EditLocation.Clear;
+  finally
+
+  end;
 end;
 
 // обновить запись в таблице Computers
@@ -235,7 +260,6 @@ begin
    {Иконка программы в трее становится видимой}
    TrayIcon1.Visible:=true;
    {Обновляем таблицы БД}
-   ADOConnection1.Connected:=False;
    //ADOTableComp.Active := False; ADOTableComp.Active := True;
    //ADOQueryLogs.Active := False; ADOQueryLogs.Active := True;
    {Запускаем сервер}
