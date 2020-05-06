@@ -22,22 +22,18 @@ object Form1: TForm1
     Top = 23
     Width = 797
     Height = 454
-    ActivePage = TabSheet1
+    ActivePage = TabSheet7
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 17
-    ExplicitHeight = 483
     object TabSheet1: TTabSheet
       Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099
-      ExplicitHeight = 455
       object DBGridComputers: TDBGrid
         Left = 0
         Top = 0
         Width = 789
         Height = 213
         Align = alClient
-        DataSource = DataSourceComp
+        DataSource = DataSourceComputer
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -52,19 +48,16 @@ object Form1: TForm1
         Height = 213
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 242
         object PageControl2: TPageControl
           Left = 1
           Top = 1
           Width = 787
           Height = 211
-          ActivePage = TabSheet5
+          ActivePage = TabSheet3
           Align = alClient
           TabOrder = 0
           object TabSheet3: TTabSheet
             Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-            ExplicitLeft = 0
-            ExplicitTop = 27
             object LabelMAC: TLabel
               Left = 11
               Top = 3
@@ -215,7 +208,7 @@ object Form1: TForm1
               Height = 21
               KeyField = 'id'
               ListField = 'id'
-              ListSource = DataSourceComp
+              ListSource = DataSourceComputer
               TabOrder = 4
               OnClick = DBLookupComboBoxID2Click
             end
@@ -253,7 +246,7 @@ object Form1: TForm1
               Height = 21
               KeyField = 'id'
               ListField = 'id'
-              ListSource = DataSourceComp
+              ListSource = DataSourceComputer
               TabOrder = 0
             end
             object ButtonDelete: TButton
@@ -272,8 +265,7 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      ExplicitHeight = 455
-      object DBGrid2: TDBGrid
+      object DBGridLogs: TDBGrid
         Left = 0
         Top = 0
         Width = 789
@@ -294,7 +286,6 @@ object Form1: TForm1
         Height = 55
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 398
         object ButtonUpdateLogs: TButton
           Left = 696
           Top = 14
@@ -309,7 +300,6 @@ object Form1: TForm1
     object TabSheet6: TTabSheet
       Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
-      ExplicitHeight = 455
       object PanelStatus: TPanel
         Left = 0
         Top = 0
@@ -317,7 +307,6 @@ object Form1: TForm1
         Height = 426
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 455
         object GroupBoxClientOnline: TGroupBox
           Left = 1
           Top = 201
@@ -326,8 +315,6 @@ object Form1: TForm1
           Align = alClient
           Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099' '#1074' '#1089#1077#1090#1080
           TabOrder = 0
-          ExplicitTop = 207
-          ExplicitWidth = 776
           object ListBoxClientOnline: TListBox
             Left = 2
             Top = 15
@@ -336,8 +323,6 @@ object Form1: TForm1
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
-            ExplicitLeft = 3
-            ExplicitTop = 16
           end
         end
         object GroupBoxStatusSockets: TGroupBox
@@ -348,8 +333,6 @@ object Form1: TForm1
           Align = alTop
           Caption = #1057#1090#1072#1090#1091#1089' '#1088#1072#1073#1086#1090#1099' '#1089#1086#1082#1077#1090#1086#1074
           TabOrder = 1
-          ExplicitLeft = 3
-          ExplicitTop = -5
           object MemoStatusSockets: TMemo
             Left = 2
             Top = 15
@@ -357,12 +340,83 @@ object Form1: TForm1
             Height = 183
             Align = alClient
             ReadOnly = True
+            ScrollBars = ssVertical
             TabOrder = 0
-            ExplicitTop = -79
-            ExplicitWidth = 181
-            ExplicitHeight = 184
           end
         end
+      end
+    end
+    object TabSheet7: TTabSheet
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      ImageIndex = 3
+      object Label1: TLabel
+        Left = 40
+        Top = 27
+        Width = 30
+        Height = 13
+        Caption = #1051#1086#1075#1080#1085
+      end
+      object Label2: TLabel
+        Left = 33
+        Top = 54
+        Width = 37
+        Height = 13
+        Caption = #1055#1072#1088#1086#1083#1100
+      end
+      object Label3: TLabel
+        Left = 33
+        Top = 81
+        Width = 37
+        Height = 13
+        Caption = #1057#1077#1088#1074#1077#1088
+      end
+      object Label4: TLabel
+        Left = 45
+        Top = 108
+        Width = 25
+        Height = 13
+        Caption = #1055#1086#1088#1090
+      end
+      object EditLogin: TEdit
+        Left = 76
+        Top = 24
+        Width = 121
+        Height = 21
+        TabOrder = 0
+        Text = 'anetwork'
+      end
+      object EditPwd: TEdit
+        Left = 76
+        Top = 51
+        Width = 121
+        Height = 21
+        TabOrder = 1
+        Text = 'qwerty'
+      end
+      object EditServer: TEdit
+        Left = 76
+        Top = 78
+        Width = 121
+        Height = 21
+        TabOrder = 2
+        Text = 'localhost'
+      end
+      object EditPort: TEdit
+        Left = 76
+        Top = 105
+        Width = 121
+        Height = 21
+        TabOrder = 3
+        Text = '3306'
+      end
+      object Button1: TButton
+        Left = 122
+        Top = 140
+        Width = 75
+        Height = 25
+        Caption = #1054#1050
+        TabOrder = 4
+        OnClick = Button1Click
       end
     end
   end
@@ -375,7 +429,6 @@ object Form1: TForm1
       item
         Width = 50
       end>
-    ExplicitTop = 506
   end
   object PanelMenu: TPanel
     Left = 0
@@ -395,13 +448,13 @@ object Form1: TForm1
     end
   end
   object ADOConnection1: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=MSDASQL.1;Password=qwerty;Persist Security Info=True;Us' +
       'er ID=anetwork;Extended Properties="Driver=MySQL ODBC 8.0 ANSI D' +
-      'river;SERVER=localhost;UID=anetwork;PWD=qwerty;DATABASE=inventor' +
-      'y;PORT=3306;COLUMN_SIZE_S32=1";Initial Catalog=inventory'
+      'river;SERVER=localhost;UID=anetwork;PWD=qwerty;PORT=3306;COLUMN_' +
+      'SIZE_S32=1"'
     LoginPrompt = False
+    Provider = 'MSDASQL.1'
     Left = 528
     Top = 40
   end
@@ -412,18 +465,10 @@ object Form1: TForm1
     Left = 528
     Top = 96
   end
-  object DataSourceComp: TDataSource
-    DataSet = ADOTableComp
+  object DataSourceComputer: TDataSource
+    DataSet = ADOQueryComputers
     Left = 600
     Top = 40
-  end
-  object ADOTableComp: TADOTable
-    Active = True
-    Connection = ADOConnection1
-    CursorType = ctStatic
-    TableName = 'computers'
-    Left = 600
-    Top = 96
   end
   object DataSourceLogs: TDataSource
     DataSet = ADOQueryLogs
@@ -448,7 +493,6 @@ object Form1: TForm1
     DOMVendorDesc = 'MSXML'
   end
   object ADOQueryLogs: TADOQuery
-    Active = True
     Connection = ADOConnection1
     CursorType = ctStatic
     LockType = ltReadOnly
@@ -467,5 +511,14 @@ object Form1: TForm1
     OnDblClick = TrayIcon1DblClick
     Left = 672
     Top = 160
+  end
+  object ADOQueryComputers: TADOQuery
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from computers;')
+    Left = 600
+    Top = 96
   end
 end

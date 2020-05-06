@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Data.Win.ADODB, Data.DB,
   Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls,
-  System.Win.ScktComp, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc;
+  System.Win.ScktComp, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc, IniFiles;
 
 type
   TForm1 = class(TForm)
@@ -14,11 +14,10 @@ type
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     DBGridComputers: TDBGrid;
-    DBGrid2: TDBGrid;
+    DBGridLogs: TDBGrid;
     ADOConnection1: TADOConnection;
     ADOQuery1: TADOQuery;
-    DataSourceComp: TDataSource;
-    ADOTableComp: TADOTable;
+    DataSourceComputer: TDataSource;
     DataSourceLogs: TDataSource;
     PanelComputers: TPanel;
     PageControl2: TPageControl;
@@ -65,6 +64,17 @@ type
     ListBoxClientOnline: TListBox;
     GroupBoxClientOnline: TGroupBox;
     GroupBoxStatusSockets: TGroupBox;
+    TabSheet7: TTabSheet;
+    Label1: TLabel;
+    Label2: TLabel;
+    EditLogin: TEdit;
+    EditPwd: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    EditServer: TEdit;
+    EditPort: TEdit;
+    Button1: TButton;
+    ADOQueryComputers: TADOQuery;
     procedure ButtonAddStringsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonChangeClick(Sender: TObject);
@@ -86,6 +96,7 @@ type
     procedure ButtonTrayClick(Sender: TObject);
     procedure TrayIcon1DblClick(Sender: TObject);
     procedure ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -101,6 +112,44 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  Ini: TIniFile;
+begin
+  {проверяем существует ли файл, если сущестувует - то находим}
+  try
+  Ini:=TIniFile.Create(ExtractFilePath(ParamStr(0))+'config.ini');
+  //Ini.WriteString('ADOConnection','ConnectionString','Provider=MSDASQL.1;Password='+EditPwd.Text+';Persist Security Info=True;User ID='+EditLogin.Text+';Extended Properties="DRIVER={MySQL ODBC 8.0 ANSI Driver};UID='+EditLogin.Text+';PWD='+EditPwd.Text+';SERVER='+EditServer.Text+';PORT='+EditPort.Text+';COLUMN_SIZE_S32=1;"');
+  Ini.WriteString('ADOConnection','ConnectionString','Provider=MSDASQL.1;Password='+EditPwd.Text+';Persist Security Info=True;User ID='+EditLogin.Text+';Extended Properties="DRIVER={MySQL ODBC 8.0 ANSI Driver};UID='+EditLogin.Text+';PWD='+EditPwd.Text+';SERVER='+EditServer.Text+';DATABASE=network_db;PORT='+EditPort.Text+';COLUMN_SIZE_S32=1;";Initial Catalog=network_db');
+  ADOConnection1.ConnectionString:=Ini.ReadString('ADOConnection','ConnectionString','');
+  Ini.Free;
+  ADOConnection1.Connected:=True;
+  ADOQueryComputers.Open;
+  ADOQueryLogs.Open;
+  Button1.Enabled := False;
+  if ADOConnection1.Connected=True then
+    Statusbar1.Panels.Items[0].Text := 'Databases connected';
+  except
+    ADOQuery1.SQL.Clear;
+    StrSQL := 'create database network_DB;';
+    ADOQuery1.SQL.Add(StrSQL);
+    ADOQuery1.ExecSQL;
+    ADOQuery1.SQL.Clear;
+    StrSQL := 'use network_DB;';
+    ADOQuery1.SQL.Add(StrSQL);
+    ADOQuery1.ExecSQL;
+    ADOQuery1.SQL.Clear;
+    StrSQL := 'create table computers (id int primary key auto_increment, MAC_address varchar(20) not null, IP varchar(20) not null, InventoryNumber int not null, Location varchar(20) not null, DateOfCreation datetime not null, LastChanges datetime not null);';
+    ADOQuery1.SQL.Add(StrSQL);
+    ADOQuery1.ExecSQL;
+    ADOQuery1.SQL.Clear;
+    StrSQL := 'create table logs (NameComputer varchar(20) not null, IP varchar(20) not null, MAC_address varchar(20) not null, AccessTime time not null);';
+    ADOQuery1.SQL.Add(StrSQL);
+    ADOQuery1.ExecSQL;
+  end;
+end;
+
 // добавить запись в таблице Computers
 procedure TForm1.ButtonAddStringsClick(Sender: TObject);
 begin
@@ -109,8 +158,8 @@ begin
   EditLocation.Text+''', now(), now() )'; // вводим запрос
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL; // перезапускаем таблицу
-  ADOTableComp.Close;
-  ADOTableComp.Open;
+  ADOQueryComputers.Close;
+  ADOQueryComputers.Open;
   EditMAC.Clear; EditIP.Clear; EditNumber.Clear; EditLocation.Clear;
 end;
 
@@ -122,8 +171,8 @@ begin
   EditNumber2.Text+', Location='''+EditLocation2.Text+''', LastChanges=now() Where  ID='+DBLookupComboBoxID2.Text; // вводим запрос
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
-  ADOTableComp.Close;
-  ADOTableComp.Open;
+  ADOQueryComputers.Close;
+  ADOQueryComputers.Open;
 end;
 
 // удалить запись в таблице Computers
@@ -133,8 +182,8 @@ begin
   StrSQL:='delete from computers where id='+DBLookupComboBoxID3.Text;
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
-  ADOTableComp.Close;
-  ADOTableComp.Open;
+  ADOQueryComputers.Close;
+  ADOQueryComputers.Open;
 end;
 
 // Очистить запись в Edit
@@ -165,10 +214,10 @@ end;
 // вывести данные в Edit из таблицы Computers
 procedure TForm1.DBLookupComboBoxID2Click(Sender: TObject);
 begin
-  EditMAC2.Text := ADOTableComp.FieldByName('MAC_address').AsString;
-  EditNumber2.Text := ADOTableComp.FieldByName('InventoryNumber').AsString;
-  EditLocation2.Text := ADOTableComp.FieldByName('Location').AsString;
-  EditIP2.Text := ADOTableComp.FieldByName('IP').AsString;
+  EditMAC2.Text := ADOQueryComputers.FieldByName('MAC_address').AsString;
+  EditNumber2.Text := ADOQueryComputers.FieldByName('InventoryNumber').AsString;
+  EditLocation2.Text := ADOQueryComputers.FieldByName('Location').AsString;
+  EditIP2.Text := ADOQueryComputers.FieldByName('IP').AsString;
 end;
 
 // Процедура спрашивает надо ли закрыть программу
@@ -186,8 +235,9 @@ begin
    {Иконка программы в трее становится видимой}
    TrayIcon1.Visible:=true;
    {Обновляем таблицы БД}
-   ADOTableComp.Active := False; ADOTableComp.Active := True;
-   ADOQueryLogs.Active := False; ADOQueryLogs.Active := True;
+   ADOConnection1.Connected:=False;
+   //ADOTableComp.Active := False; ADOTableComp.Active := True;
+   //ADOQueryLogs.Active := False; ADOQueryLogs.Active := True;
    {Запускаем сервер}
    ServerSocket1.Open;
    if ServerSocket1.Active then
