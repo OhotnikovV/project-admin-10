@@ -64,7 +64,6 @@ type
     ListBoxClientOnline: TListBox;
     GroupBoxClientOnline: TGroupBox;
     GroupBoxStatusSockets: TGroupBox;
-    TabSheet7: TTabSheet;
     Label1: TLabel;
     Label2: TLabel;
     EditLogin: TEdit;
@@ -75,6 +74,8 @@ type
     EditPort: TEdit;
     Button1: TButton;
     ADOQueryComputers: TADOQuery;
+    GroupBox1: TGroupBox;
+    PanetSetting: TPanel;
     procedure ButtonAddStringsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonChangeClick(Sender: TObject);
@@ -98,6 +99,7 @@ type
     procedure ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
     procedure Button1Click(Sender: TObject);
     procedure CreateDataBase;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -128,7 +130,6 @@ begin
   ADOConnection1.Connected:=True;
   ADOQueryComputers.Open;
   ADOQueryLogs.Open;
-  //Button1.Enabled := False;
   if ADOConnection1.Connected=True then
     Statusbar1.Panels.Items[0].Text := 'Database connected';
   except
@@ -174,7 +175,6 @@ end;
 // добавить запись в таблице Computers
 procedure TForm1.ButtonAddStringsClick(Sender: TObject);
 begin
-  try
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
   StrSQL := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+EditMAC.Text+''','''+EditIP.Text+''','+EditNumber.Text+','''+
   EditLocation.Text+''', now(), now() )'; // вводим запрос
@@ -183,9 +183,6 @@ begin
   ADOQueryComputers.Close;
   ADOQueryComputers.Open;
   EditMAC.Clear; EditIP.Clear; EditNumber.Clear; EditLocation.Clear;
-  finally
-
-  end;
 end;
 
 // обновить запись в таблице Computers
@@ -243,6 +240,12 @@ begin
   EditNumber2.Text := ADOQueryComputers.FieldByName('InventoryNumber').AsString;
   EditLocation2.Text := ADOQueryComputers.FieldByName('Location').AsString;
   EditIP2.Text := ADOQueryComputers.FieldByName('IP').AsString;
+end;
+
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  TrayIcon1.Visible:=false;
 end;
 
 // ѕроцедура спрашивает надо ли закрыть программу

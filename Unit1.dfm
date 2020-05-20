@@ -13,6 +13,7 @@ object Form1: TForm1
   Font.Style = []
   OldCreateOrder = False
   Position = poDesigned
+  OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -26,7 +27,7 @@ object Form1: TForm1
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
-      Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099
+      Caption = #1048#1085#1074#1077#1090#1072#1088#1080#1079#1072#1094#1080#1103
       object DBGridComputers: TDBGrid
         Left = 0
         Top = 0
@@ -51,7 +52,7 @@ object Form1: TForm1
         object PageControl2: TPageControl
           Left = 1
           Top = 1
-          Width = 787
+          Width = 583
           Height = 211
           ActivePage = TabSheet3
           Align = alClient
@@ -260,6 +261,90 @@ object Form1: TForm1
             end
           end
         end
+        object PanetSetting: TPanel
+          Left = 584
+          Top = 1
+          Width = 204
+          Height = 211
+          Align = alRight
+          TabOrder = 1
+          object GroupBox1: TGroupBox
+            Left = 1
+            Top = 1
+            Width = 202
+            Height = 209
+            Align = alClient
+            Caption = #1055#1086#1076#1082#1083#1102#1095#1077#1085#1080#1077' '#1082' '#1041#1044
+            TabOrder = 0
+            object Label1: TLabel
+              Left = 32
+              Top = 35
+              Width = 30
+              Height = 13
+              Caption = #1051#1086#1075#1080#1085
+            end
+            object Label2: TLabel
+              Left = 25
+              Top = 62
+              Width = 37
+              Height = 13
+              Caption = #1055#1072#1088#1086#1083#1100
+            end
+            object Label4: TLabel
+              Left = 37
+              Top = 116
+              Width = 25
+              Height = 13
+              Caption = #1055#1086#1088#1090
+            end
+            object Label3: TLabel
+              Left = 25
+              Top = 89
+              Width = 37
+              Height = 13
+              Caption = #1057#1077#1088#1074#1077#1088
+            end
+            object EditPwd: TEdit
+              Left = 68
+              Top = 59
+              Width = 121
+              Height = 21
+              TabOrder = 0
+            end
+            object EditLogin: TEdit
+              Left = 68
+              Top = 32
+              Width = 121
+              Height = 21
+              TabOrder = 1
+            end
+            object EditServer: TEdit
+              Left = 68
+              Top = 86
+              Width = 121
+              Height = 21
+              TabOrder = 2
+              Text = 'localhost'
+            end
+            object Button1: TButton
+              Left = 114
+              Top = 148
+              Width = 75
+              Height = 25
+              Caption = #1054#1050
+              TabOrder = 3
+              OnClick = Button1Click
+            end
+            object EditPort: TEdit
+              Left = 68
+              Top = 113
+              Width = 121
+              Height = 21
+              TabOrder = 4
+              Text = '3306'
+            end
+          end
+        end
       end
     end
     object TabSheet2: TTabSheet
@@ -313,7 +398,7 @@ object Form1: TForm1
           Width = 787
           Height = 224
           Align = alClient
-          Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088#1099' '#1074' '#1089#1077#1090#1080
+          Caption = #1057#1087#1080#1089#1086#1082' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1086#1074' '#1086#1085#1083#1072#1081#1085
           TabOrder = 0
           object ListBoxClientOnline: TListBox
             Left = 2
@@ -344,79 +429,6 @@ object Form1: TForm1
             TabOrder = 0
           end
         end
-      end
-    end
-    object TabSheet7: TTabSheet
-      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
-      ImageIndex = 3
-      object Label1: TLabel
-        Left = 40
-        Top = 27
-        Width = 30
-        Height = 13
-        Caption = #1051#1086#1075#1080#1085
-      end
-      object Label2: TLabel
-        Left = 33
-        Top = 54
-        Width = 37
-        Height = 13
-        Caption = #1055#1072#1088#1086#1083#1100
-      end
-      object Label3: TLabel
-        Left = 33
-        Top = 81
-        Width = 37
-        Height = 13
-        Caption = #1057#1077#1088#1074#1077#1088
-      end
-      object Label4: TLabel
-        Left = 45
-        Top = 108
-        Width = 25
-        Height = 13
-        Caption = #1055#1086#1088#1090
-      end
-      object EditLogin: TEdit
-        Left = 76
-        Top = 24
-        Width = 121
-        Height = 21
-        TabOrder = 0
-        Text = 'anetwork'
-      end
-      object EditPwd: TEdit
-        Left = 76
-        Top = 51
-        Width = 121
-        Height = 21
-        TabOrder = 1
-        Text = 'qwerty'
-      end
-      object EditServer: TEdit
-        Left = 76
-        Top = 78
-        Width = 121
-        Height = 21
-        TabOrder = 2
-        Text = 'localhost'
-      end
-      object EditPort: TEdit
-        Left = 76
-        Top = 105
-        Width = 121
-        Height = 21
-        TabOrder = 3
-        Text = '3306'
-      end
-      object Button1: TButton
-        Left = 122
-        Top = 140
-        Width = 75
-        Height = 25
-        Caption = #1054#1050
-        TabOrder = 4
-        OnClick = Button1Click
       end
     end
   end
