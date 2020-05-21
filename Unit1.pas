@@ -76,6 +76,13 @@ type
     ADOQueryComputers: TADOQuery;
     GroupBox1: TGroupBox;
     PanetSetting: TPanel;
+    GroupBox2: TGroupBox;
+    Edit1: TEdit;
+    Button2: TButton;
+    Button3: TButton;
+    RadioGroup1: TRadioGroup;
+    Label5: TLabel;
+    DateTimePicker1: TDateTimePicker;
     procedure ButtonAddStringsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonChangeClick(Sender: TObject);
@@ -100,6 +107,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure CreateDataBase;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -162,7 +170,7 @@ begin
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
   ADOQuery1.SQL.Clear;
-  StrSQL := 'create table logs (NameComputer varchar(20) not null, IP varchar(20) not null, MAC_address varchar(20) not null, AccessTime time not null);';
+  StrSQL := 'create table logs (NameComputer varchar(20) not null, IP varchar(20) not null, MAC_address varchar(20) not null, AccessTime datetime not null);';
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
   if ADOConnection1.Connected=True then
@@ -173,6 +181,30 @@ begin
 end;
 
 // добавить запись в таблице Computers
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  column:string;
+begin
+  column:='';
+  case RadioGroup1.ItemIndex of
+    0:column:='logs.NameComputer';
+    1:column:='logs.IP';
+    2:column:='logs.MAC_address';
+    3:column:='computers.InventoryNumber';
+    4:column:='computers.Location';
+    5:column:='logs.AccessTime';
+  end;
+  ADOQueryLogs.SQL.Clear; // очищаем свойство sql от запросов
+  StrSQL := 'select logs.NameComputer, logs.IP, logs.MAC_address, computers.InventoryNumber, computers.Location, AccessTime '+
+            'from logs '+
+            'join computers on logs.MAC_address=computers.MAC_address '+
+            'and '+column+'='''+Edit1.Text+'''';
+  ADOQueryLogs.SQL.Add(StrSQL);
+  ADOQueryLogs.Close;
+  ADOQueryLogs.Open;
+  Label5.Caption := DateToStr(DateTimePicker1.DateTime);
+end;
+
 procedure TForm1.ButtonAddStringsClick(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов

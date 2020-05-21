@@ -54,7 +54,7 @@ object Form1: TForm1
           Top = 1
           Width = 583
           Height = 211
-          ActivePage = TabSheet3
+          ActivePage = TabSheet4
           Align = alClient
           TabOrder = 0
           object TabSheet3: TTabSheet
@@ -354,7 +354,7 @@ object Form1: TForm1
         Left = 0
         Top = 0
         Width = 789
-        Height = 371
+        Height = 240
         Align = alClient
         DataSource = DataSourceLogs
         TabOrder = 0
@@ -366,19 +366,82 @@ object Form1: TForm1
       end
       object PanelLogs: TPanel
         Left = 0
-        Top = 371
+        Top = 240
         Width = 789
-        Height = 55
+        Height = 186
         Align = alBottom
         TabOrder = 1
         object ButtonUpdateLogs: TButton
           Left = 696
-          Top = 14
+          Top = 22
           Width = 75
           Height = 25
           Caption = #1054#1073#1085#1086#1074#1080#1090#1100
           TabOrder = 0
           OnClick = ButtonUpdateLogsClick
+        end
+        object GroupBox2: TGroupBox
+          Left = 0
+          Top = 0
+          Width = 569
+          Height = 184
+          Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
+          TabOrder = 1
+          object Label5: TLabel
+            Left = 212
+            Top = 16
+            Width = 40
+            Height = 13
+            Caption = #1044#1072#1085#1085#1099#1077
+          end
+          object Edit1: TEdit
+            Left = 212
+            Top = 35
+            Width = 121
+            Height = 21
+            TabOrder = 0
+          end
+          object Button2: TButton
+            Left = 339
+            Top = 31
+            Width = 75
+            Height = 25
+            Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100
+            TabOrder = 1
+            OnClick = Button2Click
+          end
+          object Button3: TButton
+            Left = 464
+            Top = 30
+            Width = 75
+            Height = 25
+            Caption = 'Button3'
+            TabOrder = 2
+          end
+          object RadioGroup1: TRadioGroup
+            Left = 3
+            Top = 21
+            Width = 185
+            Height = 160
+            Caption = #1057#1090#1086#1083#1073#1077#1094
+            Items.Strings = (
+              #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
+              'IP-'#1072#1076#1088#1077#1089
+              'MAC-'#1072#1076#1088#1077#1089
+              #1048#1085#1074#1077#1085#1090#1088#1072#1085#1099#1081' '#1085#1086#1084#1077#1088
+              #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077
+              #1042#1088#1077#1084#1103' '#1076#1086#1089#1090#1091#1087#1072)
+            TabOrder = 3
+          end
+          object DateTimePicker1: TDateTimePicker
+            Left = 248
+            Top = 104
+            Width = 186
+            Height = 21
+            Date = 43972.687814837960000000
+            Time = 43972.687814837960000000
+            TabOrder = 4
+          end
         end
       end
     end
@@ -460,13 +523,13 @@ object Form1: TForm1
     end
   end
   object ADOConnection1: TADOConnection
+    Connected = True
     ConnectionString = 
       'Provider=MSDASQL.1;Password=qwerty;Persist Security Info=True;Us' +
       'er ID=anetwork;Extended Properties="Driver=MySQL ODBC 8.0 ANSI D' +
       'river;SERVER=localhost;UID=anetwork;PWD=qwerty;PORT=3306;COLUMN_' +
       'SIZE_S32=1"'
     LoginPrompt = False
-    Provider = 'MSDASQL.1'
     Left = 528
     Top = 40
   end
@@ -516,7 +579,7 @@ object Form1: TForm1
       'from logs'
       'join computers'
       'on logs.MAC_address=computers.MAC_address;')
-    Left = 672
+    Left = 688
     Top = 96
   end
   object TrayIcon1: TTrayIcon
