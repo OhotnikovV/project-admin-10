@@ -25,6 +25,8 @@ object Form1: TForm1
     ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
+    ExplicitLeft = 8
+    ExplicitTop = 28
     object TabSheet1: TTabSheet
       Caption = #1048#1085#1074#1077#1090#1072#1088#1080#1079#1072#1094#1080#1103
       object DBGridComputers: TDBGrid
@@ -280,12 +282,14 @@ object Form1: TForm1
           Align = alClient
           Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
           TabOrder = 0
+          ExplicitLeft = 0
+          ExplicitTop = 0
           object Label5: TLabel
             Left = 220
             Top = 16
-            Width = 40
+            Width = 93
             Height = 13
-            Caption = #1044#1072#1085#1085#1099#1077
+            Caption = #1042#1074#1077#1076#1080#1090#1077' '#1079#1085#1072#1095#1077#1085#1080#1077
           end
           object Label1: TLabel
             Left = 200
@@ -319,7 +323,7 @@ object Form1: TForm1
           end
           object ButtonAll: TButton
             Left = 464
-            Top = 54
+            Top = 27
             Width = 105
             Height = 25
             Caption = #1055#1086#1083#1085#1072#1103' '#1090#1072#1073#1083#1080#1094#1072
@@ -331,7 +335,7 @@ object Form1: TForm1
             Top = 21
             Width = 185
             Height = 160
-            Caption = #1057#1090#1086#1083#1073#1077#1094
+            Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072' '#1087#1086' '#1089#1090#1086#1083#1073#1094#1091
             ItemIndex = 0
             Items.Strings = (
               #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
@@ -352,7 +356,7 @@ object Form1: TForm1
           end
           object ButtonUpdateLogs: TButton
             Left = 464
-            Top = 85
+            Top = 58
             Width = 105
             Height = 25
             Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1076#1072#1085#1085#1099#1077
@@ -367,6 +371,14 @@ object Form1: TForm1
             Date = 43972.958333333340000000
             Time = 43972.958333333340000000
             TabOrder = 6
+          end
+          object CheckBox1: TCheckBox
+            Left = 220
+            Top = 116
+            Width = 165
+            Height = 17
+            Caption = #1057#1075#1088#1091#1087#1087#1080#1088#1086#1074#1072#1090#1100' '#1087#1086' '#1079#1085#1072#1095#1077#1085#1080#1102
+            TabOrder = 7
           end
         end
       end
@@ -411,6 +423,8 @@ object Form1: TForm1
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
+            ExplicitLeft = 1
+            ExplicitTop = 16
           end
         end
         object GroupBoxStatusSockets: TGroupBox

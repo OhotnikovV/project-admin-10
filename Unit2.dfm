@@ -24,10 +24,6 @@ object Form2: TForm2
     Align = alClient
     Caption = #1055#1086#1076#1082#1083#1102#1095#1077#1085#1080#1077' '#1082' '#1073#1072#1079#1077' '#1076#1072#1085#1085#1099#1093
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 185
-    ExplicitHeight = 105
     object LabelLogin: TLabel
       Left = 34
       Top = 40

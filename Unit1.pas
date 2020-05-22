@@ -75,6 +75,7 @@ type
     DateTimePicker2: TDateTimePicker;
     Label1: TLabel;
     Label2: TLabel;
+    CheckBox1: TCheckBox;
     procedure ButtonAddStringsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonChangeClick(Sender: TObject);
@@ -121,6 +122,7 @@ procedure TForm1.ButtonSortClick(Sender: TObject);
 var
   column:string;
 begin
+  {С помощью оператора выбора case назначаем индексы группе переключателей}
   column:='';
   case RadioGroup1.ItemIndex of
     0:column:='logs.NameComputer';
@@ -137,13 +139,18 @@ begin
             'and '+column+'='''+EditSort.Text+''''+
             //'and logs.AccessTime between '''+DateToStr(DateTimePicker1.DateTime)+''' and '''+DateToStr(DateTimePicker2.DateTime)+''';';
             'and logs.AccessTime between '''+FormatDateTime('yyyy-mm-dd hh:mm:ss',DateTimePicker1.Date)+''' and '''+FormatDateTime('yyyy-mm-dd hh:mm:ss',DateTimePicker2.Date)+''';';
+  {если независимый переключатель(флажок) отмечен - добавляем запрос с сгрупировкой данных}
+  if CheckBox1.Checked = True then
+  begin
+    delete(StrSQL,pos(';',StrSQL),1);
+    StrSQL:= StrSQL + ' group by logs.MAC_address;';
+  end;
   ADOQueryLogs.SQL.Add(StrSQL);
   ADOQueryLogs.Close;
   ADOQueryLogs.Open;
-  //Label5.Caption := FormatDateTime('yyyy-mm-dd hh:mm:ss',DateTimePicker2.Date);//DateToStr(DateTimePicker1.DateTime);
 end;
 
-
+// GПолная таблица логов
 procedure TForm1.ButtonAllClick(Sender: TObject);
 begin
   ADOQueryLogs.SQL.Clear; // очищаем свойство sql от запросов
