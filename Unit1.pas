@@ -64,25 +64,17 @@ type
     ListBoxClientOnline: TListBox;
     GroupBoxClientOnline: TGroupBox;
     GroupBoxStatusSockets: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
-    EditLogin: TEdit;
-    EditPwd: TEdit;
-    Label3: TLabel;
-    Label4: TLabel;
-    EditServer: TEdit;
-    EditPort: TEdit;
-    Button1: TButton;
     ADOQueryComputers: TADOQuery;
-    GroupBox1: TGroupBox;
-    PanetSetting: TPanel;
     GroupBox2: TGroupBox;
-    Edit1: TEdit;
-    Button2: TButton;
-    Button3: TButton;
+    EditSort: TEdit;
+    ButtonSort: TButton;
+    ButtonAll: TButton;
     RadioGroup1: TRadioGroup;
     Label5: TLabel;
     DateTimePicker1: TDateTimePicker;
+    DateTimePicker2: TDateTimePicker;
+    Label1: TLabel;
+    Label2: TLabel;
     procedure ButtonAddStringsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonChangeClick(Sender: TObject);
@@ -104,10 +96,9 @@ type
     procedure ButtonTrayClick(Sender: TObject);
     procedure TrayIcon1DblClick(Sender: TObject);
     procedure ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
-    procedure Button1Click(Sender: TObject);
-    procedure CreateDataBase;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure Button2Click(Sender: TObject);
+    procedure ButtonSortClick(Sender: TObject);
+    procedure ButtonAllClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -116,72 +107,17 @@ type
 
 var
   Form1: TForm1;
-  StrSQL:string;
-  i:integer;
+  StrSQL: string;
+  i: integer;
 
 implementation
 
+uses unit2;
+
 {$R *.dfm}
 
-
-procedure TForm1.Button1Click(Sender: TObject);
-var
-  Ini: TIniFile;
-begin
-  {проверяем существует ли файл, если сущестувует - то находим}
-  try
-  ADOConnection1.Connected:=False;
-  Ini:=TIniFile.Create(ExtractFilePath(ParamStr(0))+'config.ini');
-  Ini.WriteString('ADOConnection','ConnectionString','Provider=MSDASQL.1;Password='+EditPwd.Text+';Persist Security Info=True;User ID='+EditLogin.Text+';Extended Properties="DRIVER={MySQL ODBC 8.0 ANSI Driver};UID='+EditLogin.Text+';PWD='+EditPwd.Text+';SERVER='+EditServer.Text+';DATABASE=network_db;PORT='+EditPort.Text+';COLUMN_SIZE_S32=1;";Initial Catalog=network_db');
-  ADOConnection1.ConnectionString:=Ini.ReadString('ADOConnection','ConnectionString','');
-  Ini.Free;
-  ADOConnection1.Connected:=True;
-  ADOQueryComputers.Open;
-  ADOQueryLogs.Open;
-  if ADOConnection1.Connected=True then
-    Statusbar1.Panels.Items[0].Text := 'Database connected';
-  except
-    ShowMessage('База данных не обнаружена. Идет процесс создания БД.');
-    CreateDataBase;
-  end;
-end;
-
-procedure TForm1.CreateDataBase;
-var
-  Ini: TIniFile;
-begin
-  try
-  ADOConnection1.Connected:=False;
-  Ini:=TIniFile.Create(ExtractFilePath(ParamStr(0))+'config.ini');
-  Ini.WriteString('ADOConnection','ConnectionString','Provider=MSDASQL.1;Password='+EditPwd.Text+';Persist Security Info=True;User ID='+EditLogin.Text+';Extended Properties="DRIVER={MySQL ODBC 8.0 ANSI Driver};UID='+EditLogin.Text+';PWD='+EditPwd.Text+';SERVER='+EditServer.Text+';PORT='+EditPort.Text+';COLUMN_SIZE_S32=1;"');
-  ADOConnection1.ConnectionString:=Ini.ReadString('ADOConnection','ConnectionString','');
-  Ini.Free;
-  ADOConnection1.Connected:=True;
-  ADOQuery1.SQL.Clear;
-  StrSQL := 'create database network_DB;';
-  ADOQuery1.SQL.Add(StrSQL);
-  ADOQuery1.ExecSQL;
-  ADOQuery1.SQL.Clear;
-  StrSQL := 'use network_DB;';
-  ADOQuery1.SQL.Add(StrSQL);
-  ADOQuery1.ExecSQL;
-  ADOQuery1.SQL.Clear;
-  StrSQL := 'create table computers (id int primary key auto_increment, MAC_address varchar(20) not null, IP varchar(20) not null, InventoryNumber int not null, Location varchar(20) not null, DateOfCreation datetime not null, LastChanges datetime not null);';
-  ADOQuery1.SQL.Add(StrSQL);
-  ADOQuery1.ExecSQL;
-  ADOQuery1.SQL.Clear;
-  StrSQL := 'create table logs (NameComputer varchar(20) not null, IP varchar(20) not null, MAC_address varchar(20) not null, AccessTime datetime not null);';
-  ADOQuery1.SQL.Add(StrSQL);
-  ADOQuery1.ExecSQL;
-  if ADOConnection1.Connected=True then
-    Statusbar1.Panels.Items[0].Text := 'Database created';
-  except
-    ShowMessage('База данных уже создана!');
-  end;
-end;
-
-// добавить запись в таблице Computers
-procedure TForm1.Button2Click(Sender: TObject);
+ // сортировка
+procedure TForm1.ButtonSortClick(Sender: TObject);
 var
   column:string;
 begin
@@ -198,13 +134,28 @@ begin
   StrSQL := 'select logs.NameComputer, logs.IP, logs.MAC_address, computers.InventoryNumber, computers.Location, AccessTime '+
             'from logs '+
             'join computers on logs.MAC_address=computers.MAC_address '+
-            'and '+column+'='''+Edit1.Text+'''';
+            'and '+column+'='''+EditSort.Text+''''+
+            //'and logs.AccessTime between '''+DateToStr(DateTimePicker1.DateTime)+''' and '''+DateToStr(DateTimePicker2.DateTime)+''';';
+            'and logs.AccessTime between '''+FormatDateTime('yyyy-mm-dd hh:mm:ss',DateTimePicker1.Date)+''' and '''+FormatDateTime('yyyy-mm-dd hh:mm:ss',DateTimePicker2.Date)+''';';
   ADOQueryLogs.SQL.Add(StrSQL);
   ADOQueryLogs.Close;
   ADOQueryLogs.Open;
-  Label5.Caption := DateToStr(DateTimePicker1.DateTime);
+  //Label5.Caption := FormatDateTime('yyyy-mm-dd hh:mm:ss',DateTimePicker2.Date);//DateToStr(DateTimePicker1.DateTime);
 end;
 
+
+procedure TForm1.ButtonAllClick(Sender: TObject);
+begin
+  ADOQueryLogs.SQL.Clear; // очищаем свойство sql от запросов
+  StrSQL := 'select logs.NameComputer, logs.IP, logs.MAC_address, computers.InventoryNumber, computers.Location, AccessTime '+
+            'from logs '+
+            'join computers on logs.MAC_address=computers.MAC_address';
+  ADOQueryLogs.SQL.Add(StrSQL);
+  ADOQueryLogs.Close;
+  ADOQueryLogs.Open;
+end;
+
+// добавить запись в таблице Computers
 procedure TForm1.ButtonAddStringsClick(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
@@ -292,15 +243,14 @@ end;
 // Процедура - при создании формы
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-   {Иконка программы в трее становится видимой}
-   TrayIcon1.Visible:=true;
-   {Обновляем таблицы БД}
-   //ADOTableComp.Active := False; ADOTableComp.Active := True;
-   //ADOQueryLogs.Active := False; ADOQueryLogs.Active := True;
-   {Запускаем сервер}
-   ServerSocket1.Open;
-   if ServerSocket1.Active then
-     Statusbar1.Panels.Items[0].Text := 'Active and Open Server';
+  {При запуске форма недостуна}
+  Form1.Enabled:=false;
+  {Иконка программы в трее становится видимой}
+  TrayIcon1.Visible:=true;
+  {Запускаем сервер}
+  ServerSocket1.Open;
+  if ServerSocket1.Active then
+   Statusbar1.Panels.Items[0].Text := 'Active and Open Server';
 end;
 
 // Процедура - клиент присоединился

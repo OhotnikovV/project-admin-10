@@ -1,7 +1,6 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  ActiveControl = PageControl1
   Caption = 'Network Administration'
   ClientHeight = 496
   ClientWidth = 797
@@ -23,7 +22,7 @@ object Form1: TForm1
     Top = 23
     Width = 797
     Height = 454
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -52,9 +51,9 @@ object Form1: TForm1
         object PageControl2: TPageControl
           Left = 1
           Top = 1
-          Width = 583
+          Width = 787
           Height = 211
-          ActivePage = TabSheet4
+          ActivePage = TabSheet3
           Align = alClient
           TabOrder = 0
           object TabSheet3: TTabSheet
@@ -261,162 +260,71 @@ object Form1: TForm1
             end
           end
         end
-        object PanetSetting: TPanel
-          Left = 584
-          Top = 1
-          Width = 204
-          Height = 211
-          Align = alRight
-          TabOrder = 1
-          object GroupBox1: TGroupBox
-            Left = 1
-            Top = 1
-            Width = 202
-            Height = 209
-            Align = alClient
-            Caption = #1055#1086#1076#1082#1083#1102#1095#1077#1085#1080#1077' '#1082' '#1041#1044
-            TabOrder = 0
-            object Label1: TLabel
-              Left = 32
-              Top = 35
-              Width = 30
-              Height = 13
-              Caption = #1051#1086#1075#1080#1085
-            end
-            object Label2: TLabel
-              Left = 25
-              Top = 62
-              Width = 37
-              Height = 13
-              Caption = #1055#1072#1088#1086#1083#1100
-            end
-            object Label4: TLabel
-              Left = 37
-              Top = 116
-              Width = 25
-              Height = 13
-              Caption = #1055#1086#1088#1090
-            end
-            object Label3: TLabel
-              Left = 25
-              Top = 89
-              Width = 37
-              Height = 13
-              Caption = #1057#1077#1088#1074#1077#1088
-            end
-            object EditPwd: TEdit
-              Left = 68
-              Top = 59
-              Width = 121
-              Height = 21
-              TabOrder = 0
-            end
-            object EditLogin: TEdit
-              Left = 68
-              Top = 32
-              Width = 121
-              Height = 21
-              TabOrder = 1
-            end
-            object EditServer: TEdit
-              Left = 68
-              Top = 86
-              Width = 121
-              Height = 21
-              TabOrder = 2
-              Text = 'localhost'
-            end
-            object Button1: TButton
-              Left = 114
-              Top = 148
-              Width = 75
-              Height = 25
-              Caption = #1054#1050
-              TabOrder = 3
-              OnClick = Button1Click
-            end
-            object EditPort: TEdit
-              Left = 68
-              Top = 113
-              Width = 121
-              Height = 21
-              TabOrder = 4
-              Text = '3306'
-            end
-          end
-        end
       end
     end
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      object DBGridLogs: TDBGrid
-        Left = 0
-        Top = 0
-        Width = 789
-        Height = 240
-        Align = alClient
-        DataSource = DataSourceLogs
-        TabOrder = 0
-        TitleFont.Charset = DEFAULT_CHARSET
-        TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Tahoma'
-        TitleFont.Style = []
-      end
       object PanelLogs: TPanel
         Left = 0
         Top = 240
         Width = 789
         Height = 186
         Align = alBottom
-        TabOrder = 1
-        object ButtonUpdateLogs: TButton
-          Left = 696
-          Top = 22
-          Width = 75
-          Height = 25
-          Caption = #1054#1073#1085#1086#1074#1080#1090#1100
-          TabOrder = 0
-          OnClick = ButtonUpdateLogsClick
-        end
+        TabOrder = 0
         object GroupBox2: TGroupBox
-          Left = 0
-          Top = 0
-          Width = 569
+          Left = 1
+          Top = 1
+          Width = 787
           Height = 184
+          Align = alClient
           Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
-          TabOrder = 1
+          TabOrder = 0
           object Label5: TLabel
-            Left = 212
+            Left = 220
             Top = 16
             Width = 40
             Height = 13
             Caption = #1044#1072#1085#1085#1099#1077
           end
-          object Edit1: TEdit
-            Left = 212
+          object Label1: TLabel
+            Left = 200
+            Top = 62
+            Width = 14
+            Height = 13
+            Caption = #1054#1090
+          end
+          object Label2: TLabel
+            Left = 200
+            Top = 89
+            Width = 14
+            Height = 13
+            Caption = #1044#1086
+          end
+          object EditSort: TEdit
+            Left = 220
             Top = 35
             Width = 121
             Height = 21
             TabOrder = 0
           end
-          object Button2: TButton
-            Left = 339
+          object ButtonSort: TButton
+            Left = 347
             Top = 31
             Width = 75
             Height = 25
             Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100
             TabOrder = 1
-            OnClick = Button2Click
+            OnClick = ButtonSortClick
           end
-          object Button3: TButton
+          object ButtonAll: TButton
             Left = 464
-            Top = 30
-            Width = 75
+            Top = 54
+            Width = 105
             Height = 25
-            Caption = 'Button3'
+            Caption = #1055#1086#1083#1085#1072#1103' '#1090#1072#1073#1083#1080#1094#1072
             TabOrder = 2
+            OnClick = ButtonAllClick
           end
           object RadioGroup1: TRadioGroup
             Left = 3
@@ -424,25 +332,57 @@ object Form1: TForm1
             Width = 185
             Height = 160
             Caption = #1057#1090#1086#1083#1073#1077#1094
+            ItemIndex = 0
             Items.Strings = (
               #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
               'IP-'#1072#1076#1088#1077#1089
               'MAC-'#1072#1076#1088#1077#1089
               #1048#1085#1074#1077#1085#1090#1088#1072#1085#1099#1081' '#1085#1086#1084#1077#1088
-              #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077
-              #1042#1088#1077#1084#1103' '#1076#1086#1089#1090#1091#1087#1072)
+              #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077)
             TabOrder = 3
           end
           object DateTimePicker1: TDateTimePicker
-            Left = 248
-            Top = 104
-            Width = 186
+            Left = 220
+            Top = 62
+            Width = 202
             Height = 21
-            Date = 43972.687814837960000000
-            Time = 43972.687814837960000000
+            Date = 43972.000000000000000000
+            Time = 43972.000000000000000000
             TabOrder = 4
           end
+          object ButtonUpdateLogs: TButton
+            Left = 464
+            Top = 85
+            Width = 105
+            Height = 25
+            Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1076#1072#1085#1085#1099#1077
+            TabOrder = 5
+            OnClick = ButtonUpdateLogsClick
+          end
+          object DateTimePicker2: TDateTimePicker
+            Left = 220
+            Top = 89
+            Width = 202
+            Height = 21
+            Date = 43972.958333333340000000
+            Time = 43972.958333333340000000
+            TabOrder = 6
+          end
         end
+      end
+      object DBGridLogs: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 789
+        Height = 240
+        Align = alClient
+        DataSource = DataSourceLogs
+        TabOrder = 1
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
       end
     end
     object TabSheet6: TTabSheet
