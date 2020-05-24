@@ -22,11 +22,9 @@ object Form1: TForm1
     Top = 23
     Width = 797
     Height = 454
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 28
     object TabSheet1: TTabSheet
       Caption = #1048#1085#1074#1077#1090#1072#1088#1080#1079#1072#1094#1080#1103
       object DBGridComputers: TDBGrid
@@ -138,6 +136,10 @@ object Form1: TForm1
           object TabSheet4: TTabSheet
             Caption = #1048#1079#1084#1077#1085#1080#1090#1100
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object LabelMAC2: TLabel
               Left = 11
               Top = 49
@@ -234,6 +236,10 @@ object Form1: TForm1
           object TabSheet5: TTabSheet
             Caption = #1059#1076#1072#1083#1080#1090#1100
             ImageIndex = 2
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object LabelID3: TLabel
               Left = 11
               Top = 3
@@ -267,6 +273,10 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PanelLogs: TPanel
         Left = 0
         Top = 240
@@ -400,6 +410,10 @@ object Form1: TForm1
     object TabSheet6: TTabSheet
       Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PanelStatus: TPanel
         Left = 0
         Top = 0
@@ -423,8 +437,6 @@ object Form1: TForm1
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
-            ExplicitLeft = 1
-            ExplicitTop = 16
           end
         end
         object GroupBoxStatusSockets: TGroupBox
