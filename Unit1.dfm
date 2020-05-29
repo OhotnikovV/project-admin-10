@@ -27,6 +27,10 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #1048#1085#1074#1077#1090#1072#1088#1080#1079#1072#1094#1080#1103
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DBGridComputers: TDBGrid
         Left = 0
         Top = 0
@@ -58,6 +62,10 @@ object Form1: TForm1
           TabOrder = 0
           object TabSheet3: TTabSheet
             Caption = #1044#1086#1073#1072#1074#1080#1090#1100
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object LabelMAC: TLabel
               Left = 11
               Top = 3
@@ -410,10 +418,6 @@ object Form1: TForm1
     object TabSheet6: TTabSheet
       Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PanelStatus: TPanel
         Left = 0
         Top = 0
@@ -521,7 +525,6 @@ object Form1: TForm1
     Port = 65000
     ServerType = stNonBlocking
     OnAccept = ServerSocket1Accept
-    OnClientConnect = ServerSocket1ClientConnect
     OnClientDisconnect = ServerSocket1ClientDisconnect
     OnClientRead = ServerSocket1ClientRead
     OnClientError = ServerSocket1ClientError

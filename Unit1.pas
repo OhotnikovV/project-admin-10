@@ -85,8 +85,6 @@ type
     procedure ButtonClear2Click(Sender: TObject);
     procedure ServerSocket1ClientRead(Sender: TObject;
       Socket: TCustomWinSocket);
-    procedure ServerSocket1ClientConnect(Sender: TObject;
-      Socket: TCustomWinSocket);
     procedure ServerSocket1ClientDisconnect(Sender: TObject;
       Socket: TCustomWinSocket);
     procedure ServerSocket1ClientError(Sender: TObject;
@@ -270,13 +268,6 @@ begin
   MemoStatusSockets.Lines.Insert(0, '['+TimeToStr(Time)+'] Подключился клиент '+Socket.RemoteAddress);
 end;
 
-// Процедура -  клиент присоединяется
-procedure TForm1.ServerSocket1ClientConnect(Sender: TObject;
-  Socket: TCustomWinSocket);
-begin
-  //MemoStatusSockets.Lines.Insert(0, '['+TimeToStr(Time)+'] Подключился клиент '+Socket.RemoteAddress);
-end;
-
 // Процедура -  клиент отключился
 procedure TForm1.ServerSocket1ClientDisconnect(Sender: TObject;
   Socket: TCustomWinSocket);
@@ -305,6 +296,20 @@ begin
   s := '';
   s := Socket.ReceiveText;
   StatusBar1.Panels.Items[0].Text:='Data transferred from '+Socket.RemoteAddress;
+  {Прислали имя, записываем в листбокс, отправляем все имена из листбокса все клиентам}
+  if Pos('#N',s) <> 0 then
+  begin
+    NameClient := Copy(s, Pos('#N', s), Length(s));
+    Delete(s,Pos('#N', s),Length(s));
+    Delete(NameClient,1,2);
+    ListBoxClientOnline.Items.Add(NameClient);
+    NameClient := '#U';
+    for i := 0 to ListBoxClientOnline.Items.Count-1 do
+      NameClient := NameClient+ListBoxClientOnline.Items[i]+';';
+    for i := 0 to ServerSocket1.Socket.ActiveConnections-1 do
+      ServerSocket1.Socket.Connections[i].SendText(NameClient);
+    Exit;
+  end;
   {Если кто-то кинул сообщение - рассылаем его всем клиентам}
   if Copy(s,1,2) = '#P' then
   begin
@@ -322,14 +327,6 @@ begin
     IP_address:=  XMLDocument1.DocumentElement.ChildNodes['IP_address'].Text;
     MAC_address := XMLDocument1.DocumentElement.ChildNodes['MAC_address'].Text;
     XMLDocument1.Active := false;
-    {отправляем имена клиентов из листбокса всем клиентам}
-    ListBoxClientOnline.Items.Add(NameComputer);
-    NameClient := '#U';
-    for i := 0 to ListBoxClientOnline.Items.Count-1 do
-      NameClient := NameClient+ListBoxClientOnline.Items[i]+';';
-    for i := 0 to ServerSocket1.Socket.ActiveConnections-1 do
-      ServerSocket1.Socket.Connections[i].SendText(NameClient);
-    {отправляем данные в таблицу logs}
     ADOQuery1.SQL.Clear;
     StrSQL := 'insert logs (NameComputer,IP,MAC_address,AccessTime) values ('''+NameComputer+''','''+IP_address+''','''+MAC_address+''', now())';
     ADOQuery1.SQL.Add(StrSQL);
