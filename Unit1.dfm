@@ -2,14 +2,15 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Network Administration'
-  ClientHeight = 496
-  ClientWidth = 797
+  ClientHeight = 578
+  ClientWidth = 874
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  Menu = MainMenu1
   OldCreateOrder = False
   Position = poDesigned
   OnClose = FormClose
@@ -19,23 +20,22 @@ object Form1: TForm1
   TextHeight = 13
   object PageControl1: TPageControl
     Left = 0
-    Top = 23
-    Width = 797
-    Height = 454
-    ActivePage = TabSheet1
+    Top = 0
+    Width = 874
+    Height = 559
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
+    ExplicitTop = 23
+    ExplicitHeight = 536
     object TabSheet1: TTabSheet
       Caption = #1048#1085#1074#1077#1090#1072#1088#1080#1079#1072#1094#1080#1103
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitHeight = 508
       object DBGridComputers: TDBGrid
         Left = 0
         Top = 0
-        Width = 789
-        Height = 213
+        Width = 866
+        Height = 318
         Align = alClient
         DataSource = DataSourceComputer
         TabOrder = 0
@@ -47,25 +47,22 @@ object Form1: TForm1
       end
       object PanelComputers: TPanel
         Left = 0
-        Top = 213
-        Width = 789
+        Top = 318
+        Width = 866
         Height = 213
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 295
         object PageControl2: TPageControl
           Left = 1
           Top = 1
-          Width = 787
+          Width = 864
           Height = 211
-          ActivePage = TabSheet3
+          ActivePage = TabSheet5
           Align = alClient
           TabOrder = 0
           object TabSheet3: TTabSheet
             Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object LabelMAC: TLabel
               Left = 11
               Top = 3
@@ -144,10 +141,6 @@ object Form1: TForm1
           object TabSheet4: TTabSheet
             Caption = #1048#1079#1084#1077#1085#1080#1090#1100
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object LabelMAC2: TLabel
               Left = 11
               Top = 49
@@ -244,10 +237,6 @@ object Form1: TForm1
           object TabSheet5: TTabSheet
             Caption = #1059#1076#1072#1083#1080#1090#1100
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object LabelID3: TLabel
               Left = 11
               Top = 3
@@ -258,7 +247,7 @@ object Form1: TForm1
             object DBLookupComboBoxID3: TDBLookupComboBox
               Left = 11
               Top = 22
-              Width = 145
+              Width = 118
               Height = 21
               KeyField = 'id'
               ListField = 'id'
@@ -281,130 +270,340 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitHeight = 508
       object PanelLogs: TPanel
         Left = 0
-        Top = 240
-        Width = 789
-        Height = 186
+        Top = 327
+        Width = 866
+        Height = 204
         Align = alBottom
         TabOrder = 0
-        object GroupBox2: TGroupBox
-          Left = 1
+        ExplicitTop = 304
+        object GroupBoxSearch: TGroupBox
+          Left = 273
           Top = 1
-          Width = 787
-          Height = 184
+          Width = 277
+          Height = 202
           Align = alClient
-          Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
+          Caption = #1055#1086#1080#1089#1082' '#1087#1086' '#1079#1085#1072#1095#1077#1085#1080#1102
           TabOrder = 0
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          object Label5: TLabel
-            Left = 220
-            Top = 16
-            Width = 93
+          ExplicitWidth = 265
+          object LabelDate: TLabel
+            Left = 66
+            Top = 21
+            Width = 48
             Height = 13
-            Caption = #1042#1074#1077#1076#1080#1090#1077' '#1079#1085#1072#1095#1077#1085#1080#1077
+            Caption = #1047#1085#1072#1095#1077#1085#1080#1077
           end
-          object Label1: TLabel
-            Left = 200
-            Top = 62
-            Width = 14
+          object LabelNb: TLabel
+            Left = 12
+            Top = 130
+            Width = 102
             Height = 13
-            Caption = #1054#1090
+            Caption = #1048#1085#1074#1077#1085#1090#1072#1088#1085#1099#1081' '#1085#1086#1084#1077#1088
           end
-          object Label2: TLabel
-            Left = 200
-            Top = 89
-            Width = 14
+          object LabelNC: TLabel
+            Left = 29
+            Top = 49
+            Width = 85
             Height = 13
-            Caption = #1044#1086
+            Caption = #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
+          end
+          object LabelIPad: TLabel
+            Left = 70
+            Top = 76
+            Width = 44
+            Height = 13
+            Caption = 'IP-'#1072#1076#1088#1077#1089
+          end
+          object LabelMACad: TLabel
+            Left = 58
+            Top = 103
+            Width = 56
+            Height = 13
+            Caption = 'MAC-'#1072#1076#1088#1077#1089
+          end
+          object LabelLoc: TLabel
+            Left = 41
+            Top = 157
+            Width = 73
+            Height = 13
+            Caption = #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077
           end
           object EditSort: TEdit
-            Left = 220
-            Top = 35
+            Left = 120
+            Top = 19
             Width = 121
             Height = 21
+            Enabled = False
             TabOrder = 0
           end
-          object ButtonSort: TButton
-            Left = 347
-            Top = 31
-            Width = 75
-            Height = 25
-            Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100
+          object DBLookupComboBoxIP: TDBLookupComboBox
+            Left = 120
+            Top = 73
+            Width = 121
+            Height = 21
+            KeyField = 'id'
+            ListField = 'IP'
+            ListSource = DataSourceComputer
             TabOrder = 1
-            OnClick = ButtonSortClick
+            OnClick = DBLookupComboBoxIPClick
           end
-          object ButtonAll: TButton
-            Left = 464
-            Top = 27
-            Width = 105
-            Height = 25
-            Caption = #1055#1086#1083#1085#1072#1103' '#1090#1072#1073#1083#1080#1094#1072
+          object DBLookupComboBoxMAC: TDBLookupComboBox
+            Left = 120
+            Top = 100
+            Width = 121
+            Height = 21
+            KeyField = 'id'
+            ListField = 'MAC_address'
+            ListSource = DataSourceComputer
             TabOrder = 2
-            OnClick = ButtonAllClick
+            OnClick = DBLookupComboBoxMACClick
           end
-          object RadioGroup1: TRadioGroup
-            Left = 3
-            Top = 21
-            Width = 185
-            Height = 160
-            Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072' '#1087#1086' '#1089#1090#1086#1083#1073#1094#1091
+          object DBLookupComboBoxNb: TDBLookupComboBox
+            Left = 120
+            Top = 127
+            Width = 121
+            Height = 21
+            KeyField = 'id'
+            ListField = 'InventoryNumber'
+            ListSource = DataSourceComputer
+            TabOrder = 3
+            OnClick = DBLookupComboBoxNbClick
+          end
+          object DBLookupComboBoxLoc: TDBLookupComboBox
+            Left = 120
+            Top = 154
+            Width = 121
+            Height = 21
+            KeyField = 'Location'
+            ListField = 'Location'
+            ListSource = DataSourceLocation
+            TabOrder = 4
+            OnClick = DBLookupComboBoxLocClick
+            OnDropDown = DBLookupComboBoxLocDropDown
+          end
+          object DBLookupComboBoxNC: TDBLookupComboBox
+            Left = 120
+            Top = 46
+            Width = 120
+            Height = 21
+            KeyField = 'NameComputer'
+            ListField = 'NameComputer'
+            ListSource = DataSourceNameComputer
+            TabOrder = 5
+            OnClick = DBLookupComboBoxNCClick
+            OnDropDown = DBLookupComboBoxLocDropDown
+          end
+        end
+        object GroupBoxSort: TGroupBox
+          Left = 137
+          Top = 1
+          Width = 136
+          Height = 202
+          Align = alLeft
+          Caption = #1043#1088#1091#1087#1087#1080#1088#1086#1074#1082#1072
+          TabOrder = 1
+          ExplicitLeft = 153
+          object RadioGroupGroupColumn: TRadioGroup
+            Left = 2
+            Top = 15
+            Width = 132
+            Height = 185
+            Align = alClient
             ItemIndex = 0
             Items.Strings = (
               #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
               'IP-'#1072#1076#1088#1077#1089
               'MAC-'#1072#1076#1088#1077#1089
               #1048#1085#1074#1077#1085#1090#1088#1072#1085#1099#1081' '#1085#1086#1084#1077#1088
-              #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077)
-            TabOrder = 3
+              #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077
+              #1042#1088#1077#1084#1103' '#1076#1086#1089#1090#1091#1087#1072)
+            TabOrder = 0
+            ExplicitWidth = 119
           end
-          object DateTimePicker1: TDateTimePicker
-            Left = 220
-            Top = 62
-            Width = 202
-            Height = 21
-            Date = 43972.000000000000000000
-            Time = 43972.000000000000000000
-            TabOrder = 4
+        end
+        object GroupBox3: TGroupBox
+          Left = 1
+          Top = 1
+          Width = 136
+          Height = 202
+          Align = alLeft
+          Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1082#1072
+          TabOrder = 2
+          object RadioGroupSortColumn: TRadioGroup
+            Left = 2
+            Top = 15
+            Width = 132
+            Height = 131
+            Align = alClient
+            ItemIndex = 0
+            Items.Strings = (
+              #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
+              'IP-'#1072#1076#1088#1077#1089
+              'MAC-'#1072#1076#1088#1077#1089
+              #1048#1085#1074#1077#1085#1090#1088#1072#1085#1099#1081' '#1085#1086#1084#1077#1088
+              #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077
+              #1042#1088#1077#1084#1103' '#1076#1086#1089#1090#1091#1087#1072)
+            TabOrder = 0
+            ExplicitWidth = 148
+          end
+          object RadioGroupAscDesc: TRadioGroup
+            Left = 2
+            Top = 146
+            Width = 132
+            Height = 54
+            Align = alBottom
+            ItemIndex = 0
+            Items.Strings = (
+              #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
+              #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102)
+            TabOrder = 1
+            ExplicitWidth = 148
+          end
+        end
+        object GroupBox1: TGroupBox
+          Left = 550
+          Top = 1
+          Width = 315
+          Height = 202
+          Align = alRight
+          Caption = #1047#1072#1087#1088#1086#1089#1099
+          TabOrder = 3
+          object LabelData: TLabel
+            Left = 16
+            Top = 119
+            Width = 26
+            Height = 13
+            Caption = #1044#1072#1090#1072
+          end
+          object LabelFrom1: TLabel
+            Left = 23
+            Top = 138
+            Width = 7
+            Height = 13
+            Caption = 'C'
+          end
+          object LabelFrom2: TLabel
+            Left = 23
+            Top = 178
+            Width = 7
+            Height = 13
+            Caption = #1057
+          end
+          object LabelTime: TLabel
+            Left = 16
+            Top = 159
+            Width = 30
+            Height = 13
+            Caption = #1042#1088#1077#1084#1103
+          end
+          object LabelTo1: TLabel
+            Left = 135
+            Top = 138
+            Width = 13
+            Height = 13
+            Caption = #1055#1086
+          end
+          object LabelTo2: TLabel
+            Left = 135
+            Top = 178
+            Width = 13
+            Height = 13
+            Caption = #1055#1086
           end
           object ButtonUpdateLogs: TButton
-            Left = 464
-            Top = 58
-            Width = 105
+            Left = 151
+            Top = 16
+            Width = 152
             Height = 25
-            Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1076#1072#1085#1085#1099#1077
-            TabOrder = 5
+            Caption = #1047#1072#1087#1088#1086#1089#1080#1090#1100' '#1085#1086#1074#1099#1077' '#1076#1072#1085#1085#1099#1077
+            TabOrder = 0
             OnClick = ButtonUpdateLogsClick
           end
-          object DateTimePicker2: TDateTimePicker
-            Left = 220
-            Top = 89
-            Width = 202
+          object ButtonSort: TButton
+            Left = 14
+            Top = 16
+            Width = 107
+            Height = 25
+            Caption = #1047#1072#1087#1088#1086#1089' '#1087#1086' '#1090#1072#1073#1083#1080#1094#1077
+            TabOrder = 1
+            OnClick = ButtonSortClick
+          end
+          object CheckBoxGroup: TCheckBox
+            Left = 14
+            Top = 96
+            Width = 157
+            Height = 17
+            Caption = #1057#1075#1088#1091#1087#1087#1080#1088#1086#1074#1072#1090#1100' '#1087#1086' '#1082#1086#1083#1086#1085#1082#1077
+            TabOrder = 2
+            OnClick = CheckBoxGroupClick
+          end
+          object CheckBoxSort: TCheckBox
+            Left = 14
+            Top = 73
+            Width = 149
+            Height = 17
+            Caption = #1057#1086#1088#1090#1080#1088#1086#1074#1072#1090#1100' '#1087#1086' '#1082#1086#1083#1086#1085#1082#1077
+            TabOrder = 3
+            OnClick = CheckBoxSortClick
+          end
+          object DateTimePicker1: TDateTimePicker
+            Left = 36
+            Top = 135
+            Width = 93
             Height = 21
-            Date = 43972.958333333340000000
-            Time = 43972.958333333340000000
+            Date = 43983.000000000000000000
+            Time = 43983.000000000000000000
+            TabOrder = 4
+          end
+          object DateTimePicker2: TDateTimePicker
+            Left = 154
+            Top = 135
+            Width = 93
+            Height = 21
+            Date = 44012.000000000000000000
+            Time = 44012.000000000000000000
+            TabOrder = 5
+          end
+          object DateTimePicker3: TDateTimePicker
+            Left = 36
+            Top = 175
+            Width = 93
+            Height = 21
+            Date = 43972.333333333340000000
+            Format = 'HH:mm:ss'
+            Time = 43972.333333333340000000
+            Kind = dtkTime
             TabOrder = 6
           end
-          object CheckBox1: TCheckBox
-            Left = 220
-            Top = 116
-            Width = 165
-            Height = 17
-            Caption = #1057#1075#1088#1091#1087#1087#1080#1088#1086#1074#1072#1090#1100' '#1087#1086' '#1079#1085#1072#1095#1077#1085#1080#1102
+          object DateTimePicker4: TDateTimePicker
+            Left = 154
+            Top = 175
+            Width = 93
+            Height = 21
+            Date = 43972.666666666660000000
+            Format = 'HH:mm:ss'
+            Time = 43972.666666666660000000
+            Kind = dtkTime
             TabOrder = 7
+          end
+          object CheckBoxSearch: TCheckBox
+            Left = 14
+            Top = 51
+            Width = 123
+            Height = 17
+            Caption = #1055#1086#1080#1089#1082' '#1087#1086' '#1079#1085#1072#1095#1077#1085#1080#1102
+            TabOrder = 8
+            OnClick = CheckBoxSearchClick
           end
         end
       end
       object DBGridLogs: TDBGrid
         Left = 0
         Top = 0
-        Width = 789
-        Height = 240
+        Width = 866
+        Height = 327
         Align = alClient
         DataSource = DataSourceLogs
         TabOrder = 1
@@ -418,35 +617,39 @@ object Form1: TForm1
     object TabSheet6: TTabSheet
       Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
+      ExplicitHeight = 508
       object PanelStatus: TPanel
         Left = 0
         Top = 0
-        Width = 789
-        Height = 426
+        Width = 866
+        Height = 531
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 508
         object GroupBoxClientOnline: TGroupBox
           Left = 1
           Top = 201
-          Width = 787
-          Height = 224
+          Width = 864
+          Height = 329
           Align = alClient
           Caption = #1057#1087#1080#1089#1086#1082' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1086#1074' '#1086#1085#1083#1072#1081#1085
           TabOrder = 0
+          ExplicitHeight = 306
           object ListBoxClientOnline: TListBox
             Left = 2
             Top = 15
-            Width = 783
-            Height = 207
+            Width = 860
+            Height = 312
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
+            ExplicitHeight = 289
           end
         end
         object GroupBoxStatusSockets: TGroupBox
           Left = 1
           Top = 1
-          Width = 787
+          Width = 864
           Height = 200
           Align = alTop
           Caption = #1057#1090#1072#1090#1091#1089' '#1088#1072#1073#1086#1090#1099' '#1089#1086#1082#1077#1090#1086#1074
@@ -454,7 +657,7 @@ object Form1: TForm1
           object MemoStatusSockets: TMemo
             Left = 2
             Top = 15
-            Width = 783
+            Width = 860
             Height = 183
             Align = alClient
             ReadOnly = True
@@ -467,30 +670,13 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 477
-    Width = 797
+    Top = 559
+    Width = 874
     Height = 19
     Panels = <
       item
         Width = 50
       end>
-  end
-  object PanelMenu: TPanel
-    Left = 0
-    Top = 0
-    Width = 797
-    Height = 23
-    Align = alTop
-    TabOrder = 2
-    object ButtonTray: TButton
-      Left = 718
-      Top = 2
-      Width = 75
-      Height = 20
-      Caption = #1057#1074#1077#1088#1085#1091#1090#1100
-      TabOrder = 0
-      OnClick = ButtonTrayClick
-    end
   end
   object ADOConnection1: TADOConnection
     Connected = True
@@ -543,11 +729,11 @@ object Form1: TForm1
     Parameters = <>
     SQL.Strings = (
       
-        'select logs.NameComputer, logs.IP, logs.MAC_address, computers.I' +
+        'SELECT logs.NameComputer, logs.IP, logs.MAC_address, computers.I' +
         'nventoryNumber, computers.Location, AccessTime'
-      'from logs'
-      'join computers'
-      'on logs.MAC_address=computers.MAC_address;')
+      'FROM logs'
+      'JOIN computers'
+      'ON logs.MAC_address=computers.MAC_address;')
     Left = 688
     Top = 96
   end
@@ -561,8 +747,47 @@ object Form1: TForm1
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
-      'select * from computers;')
+      'SELECT * FROM computers;')
     Left = 600
     Top = 96
+  end
+  object ADOQueryLocation: TADOQuery
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT DISTINCT computers.Location FROM computers;')
+    Left = 752
+    Top = 96
+  end
+  object DataSourceLocation: TDataSource
+    DataSet = ADOQueryLocation
+    Left = 752
+    Top = 40
+  end
+  object DataSourceNameComputer: TDataSource
+    DataSet = ADOQueryNameComputer
+    Left = 832
+    Top = 40
+  end
+  object ADOQueryNameComputer: TADOQuery
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT DISTINCT logs.NameComputer FROM logs;')
+    Left = 832
+    Top = 96
+  end
+  object MainMenu1: TMainMenu
+    Left = 744
+    Top = 160
+    object N1: TMenuItem
+      Caption = #1057#1074#1077#1088#1085#1091#1090#1100
+      OnClick = N1Click
+    end
+    object N3: TMenuItem
+      Caption = #1055#1086#1084#1086#1097#1100
+    end
   end
 end

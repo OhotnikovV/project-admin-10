@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Data.Win.ADODB, Data.DB,
   Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls,
-  System.Win.ScktComp, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc, IniFiles;
+  System.Win.ScktComp, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc, IniFiles,
+  Vcl.Menus;
 
 type
   TForm1 = class(TForm)
@@ -58,24 +59,51 @@ type
     ButtonUpdateLogs: TButton;
     ADOQueryLogs: TADOQuery;
     PanelLogs: TPanel;
-    PanelMenu: TPanel;
-    ButtonTray: TButton;
     TrayIcon1: TTrayIcon;
     ListBoxClientOnline: TListBox;
     GroupBoxClientOnline: TGroupBox;
     GroupBoxStatusSockets: TGroupBox;
     ADOQueryComputers: TADOQuery;
-    GroupBox2: TGroupBox;
+    GroupBoxSearch: TGroupBox;
     EditSort: TEdit;
     ButtonSort: TButton;
-    ButtonAll: TButton;
-    RadioGroup1: TRadioGroup;
-    Label5: TLabel;
+    RadioGroupGroupColumn: TRadioGroup;
+    LabelDate: TLabel;
     DateTimePicker1: TDateTimePicker;
     DateTimePicker2: TDateTimePicker;
-    Label1: TLabel;
-    Label2: TLabel;
-    CheckBox1: TCheckBox;
+    LabelFrom1: TLabel;
+    LabelTo1: TLabel;
+    CheckBoxGroup: TCheckBox;
+    LabelData: TLabel;
+    DateTimePicker3: TDateTimePicker;
+    DateTimePicker4: TDateTimePicker;
+    LabelTo2: TLabel;
+    LabelFrom2: TLabel;
+    LabelTime: TLabel;
+    DBLookupComboBoxIP: TDBLookupComboBox;
+    DBLookupComboBoxMAC: TDBLookupComboBox;
+    DBLookupComboBoxNb: TDBLookupComboBox;
+    DBLookupComboBoxLoc: TDBLookupComboBox;
+    GroupBoxSort: TGroupBox;
+    CheckBoxSort: TCheckBox;
+    GroupBox3: TGroupBox;
+    RadioGroupSortColumn: TRadioGroup;
+    RadioGroupAscDesc: TRadioGroup;
+    GroupBox1: TGroupBox;
+    ADOQueryLocation: TADOQuery;
+    DataSourceLocation: TDataSource;
+    DataSourceNameComputer: TDataSource;
+    ADOQueryNameComputer: TADOQuery;
+    DBLookupComboBoxNC: TDBLookupComboBox;
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    N3: TMenuItem;
+    CheckBoxSearch: TCheckBox;
+    LabelNb: TLabel;
+    LabelNC: TLabel;
+    LabelIPad: TLabel;
+    LabelMACad: TLabel;
+    LabelLoc: TLabel;
     procedure ButtonAddStringsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonChangeClick(Sender: TObject);
@@ -92,12 +120,23 @@ type
       var ErrorCode: Integer);
     procedure ButtonUpdateLogsClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure ButtonTrayClick(Sender: TObject);
     procedure TrayIcon1DblClick(Sender: TObject);
     procedure ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ButtonSortClick(Sender: TObject);
-    procedure ButtonAllClick(Sender: TObject);
+    function Sort(StrSQL: string):string;
+    function Group(StrSQL: string):string;
+    function Search(StrSQL: string):string;
+    procedure CheckBoxGroupClick(Sender: TObject);
+    procedure CheckBoxSortClick(Sender: TObject);
+    procedure DBLookupComboBoxLocDropDown(Sender: TObject);
+    procedure N1Click(Sender: TObject);
+    procedure DBLookupComboBoxNCClick(Sender: TObject);
+    procedure DBLookupComboBoxIPClick(Sender: TObject);
+    procedure DBLookupComboBoxMACClick(Sender: TObject);
+    procedure DBLookupComboBoxNbClick(Sender: TObject);
+    procedure DBLookupComboBoxLocClick(Sender: TObject);
+    procedure CheckBoxSearchClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -106,8 +145,8 @@ type
 
 var
   Form1: TForm1;
-  StrSQL: string;
-  i: integer;
+  StrSQL,column,AscDesc: string;
+  i,k: integer;
 
 implementation
 
@@ -117,12 +156,80 @@ uses unit2;
 
  // сортировка
 procedure TForm1.ButtonSortClick(Sender: TObject);
-var
-  column:string;
 begin
   {С помощью оператора выбора case назначаем индексы группе переключателей}
-  column:='';
-  case RadioGroup1.ItemIndex of
+  ADOQueryLogs.SQL.Clear; // очищаем свойство sql от запросов
+  StrSQL := 'SELECT logs.NameComputer, logs.IP, logs.MAC_address, computers.InventoryNumber, computers.Location, AccessTime '+
+            'FROM logs '+
+            'JOIN computers '+
+            'ON logs.MAC_address=computers.MAC_address '+
+            'AND logs.AccessTime BETWEEN '''+FormatDateTime('yyyy-mm-dd',DateTimePicker1.Date)+
+            ' '+FormatDateTime('HH:mm:ss',DateTimePicker3.date)+''' AND '''+FormatDateTime('yyyy-mm-dd',DateTimePicker2.Date)+
+            ' '+FormatDateTime('HH:mm:ss',DateTimePicker4.date)+''';';
+  {если независимый переключатель(флажок) отмечен - добавляем запрос с сгрупировкой данных}
+  if CheckBoxSearch.Checked = True then
+  begin
+    StrSQL:=Search(StrSQL);
+  end;
+  if CheckBoxGroup.Checked = True then
+  begin
+    StrSQL:=Group(StrSQL);
+  end;
+  if CheckBoxSort.Checked = True then
+  begin
+    StrSQL:=Sort(StrSQL);
+  end;
+  ADOQueryLogs.SQL.Add(StrSQL);
+  ADOQueryLogs.Close;
+  ADOQueryLogs.Open;
+end;
+
+// Функция поиска
+function TForm1.Search(StrSQL: string):string;
+begin
+  k:=-1;
+  if CheckBoxSearch.Checked = True then
+  begin
+    if (EditSort.Text) = (ADOQueryNameComputer.FieldByName('NameComputer').AsString) then
+    begin k:=0; end;
+    if  (EditSort.Text) = (ADOQueryComputers.FieldByName('IP').AsString) then
+    begin k:=1; end;
+    if  (EditSort.Text) = (ADOQueryComputers.FieldByName('MAC_address').AsString) then
+    begin k:=2; end;
+    if  (EditSort.Text) = (ADOQueryComputers.FieldByName('InventoryNumber').AsString) then
+    begin k:=3; end;
+    if  (EditSort.Text) = (ADOQueryLocation.FieldByName('Location').AsString) then
+    begin k:=4; end;
+    case k of
+      0: begin
+        delete(StrSQL,pos(';',StrSQL),1);
+        result:= StrSQL + 'AND logs.NameComputer='''+EditSort.Text+''';';
+      end;
+      1: begin
+        delete(StrSQL,pos(';',StrSQL),1);
+        result:= StrSQL + 'AND logs.IP='''+EditSort.Text+''';';
+      end;
+      2: begin
+        delete(StrSQL,pos(';',StrSQL),1);
+        result:= StrSQL + 'AND logs.MAC_address='''+EditSort.Text+''';';
+      end;
+      3: begin
+        delete(StrSQL,pos(';',StrSQL),1);
+        result:= StrSQL + 'AND computers.InventoryNumber='''+EditSort.Text+''';';
+      end;
+      4: begin
+        delete(StrSQL,pos(';',StrSQL),1);
+        result:= StrSQL + 'AND computers.Location='''+EditSort.Text+''';';
+      end;
+    end;
+  end;
+end;
+
+// Функция работы групировки
+function TForm1.Group(StrSQL: string):string;
+begin
+  AscDesc:=''; column:='';
+  case RadioGroupGroupColumn.ItemIndex of
     0:column:='logs.NameComputer';
     1:column:='logs.IP';
     2:column:='logs.MAC_address';
@@ -130,42 +237,48 @@ begin
     4:column:='computers.Location';
     5:column:='logs.AccessTime';
   end;
-  ADOQueryLogs.SQL.Clear; // очищаем свойство sql от запросов
-  StrSQL := 'select logs.NameComputer, logs.IP, logs.MAC_address, computers.InventoryNumber, computers.Location, AccessTime '+
-            'from logs '+
-            'join computers on logs.MAC_address=computers.MAC_address '+
-            'and '+column+'='''+EditSort.Text+''''+
-            //'and logs.AccessTime between '''+DateToStr(DateTimePicker1.DateTime)+''' and '''+DateToStr(DateTimePicker2.DateTime)+''';';
-            'and logs.AccessTime between '''+FormatDateTime('yyyy-mm-dd hh:mm:ss',DateTimePicker1.Date)+''' and '''+FormatDateTime('yyyy-mm-dd hh:mm:ss',DateTimePicker2.Date)+''';';
-  {если независимый переключатель(флажок) отмечен - добавляем запрос с сгрупировкой данных}
-  if CheckBox1.Checked = True then
+  if CheckBoxGroup.Checked = True then
   begin
     delete(StrSQL,pos(';',StrSQL),1);
-    StrSQL:= StrSQL + ' group by logs.MAC_address;';
+    result:= StrSQL + ' GROUP BY '+column+';';
   end;
-  ADOQueryLogs.SQL.Add(StrSQL);
-  ADOQueryLogs.Close;
-  ADOQueryLogs.Open;
 end;
 
-// GПолная таблица логов
-procedure TForm1.ButtonAllClick(Sender: TObject);
+//Свернуть в трей
+procedure TForm1.N1Click(Sender: TObject);
 begin
-  ADOQueryLogs.SQL.Clear; // очищаем свойство sql от запросов
-  StrSQL := 'select logs.NameComputer, logs.IP, logs.MAC_address, computers.InventoryNumber, computers.Location, AccessTime '+
-            'from logs '+
-            'join computers on logs.MAC_address=computers.MAC_address';
-  ADOQueryLogs.SQL.Add(StrSQL);
-  ADOQueryLogs.Close;
-  ADOQueryLogs.Open;
+  Form1.Hide;
+end;
+
+// Функция сортировки
+function TForm1.Sort(StrSQL: string):string;
+begin
+  column:='';
+  case RadioGroupSortColumn.ItemIndex of
+    0:column:='logs.NameComputer';
+    1:column:='logs.IP';
+    2:column:='logs.MAC_address';
+    3:column:='computers.InventoryNumber';
+    4:column:='computers.Location';
+    5:column:='logs.AccessTime';
+  end;
+  case RadioGroupAscDesc.ItemIndex of
+    0:AscDesc:='ASC';
+    1:AscDesc:='DESC';
+  end;
+  if CheckBoxSort.Checked = True then
+  begin
+    delete(StrSQL,pos(';',StrSQL),1);
+    result:= StrSQL + ' ORDER BY '+column+' '+AscDesc+';';
+  end;
 end;
 
 // добавить запись в таблице Computers
 procedure TForm1.ButtonAddStringsClick(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear; // очищаем свойство sql от запросов
-  StrSQL := 'insert into computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) values('''+EditMAC.Text+''','''+EditIP.Text+''','+EditNumber.Text+','''+
-  EditLocation.Text+''', now(), now() )'; // вводим запрос
+  StrSQL := 'INSERT INTO computers (MAC_address,IP,InventoryNumber,Location,DateOfCreation,LastChanges) VALUES ('''+EditMAC.Text+''','''+EditIP.Text+''','+EditNumber.Text+','''+
+  EditLocation.Text+''', NOW(), NOW() )'; // вводим запрос
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL; // перезапускаем таблицу
   ADOQueryComputers.Close;
@@ -177,8 +290,8 @@ end;
 procedure TForm1.ButtonChangeClick(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear;
-  StrSQL := 'update computers set MAC_address='''+EditMAC2.Text+''', IP='''+EditIP2.Text+''', InventoryNumber='+
-  EditNumber2.Text+', Location='''+EditLocation2.Text+''', LastChanges=now() Where  ID='+DBLookupComboBoxID2.Text; // вводим запрос
+  StrSQL := 'UPDATE computers SET MAC_address='''+EditMAC2.Text+''', IP='''+EditIP2.Text+''', InventoryNumber='+
+  EditNumber2.Text+', Location='''+EditLocation2.Text+''', LastChanges=NOW() WHERE  ID='+DBLookupComboBoxID2.Text; // вводим запрос
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
   ADOQueryComputers.Close;
@@ -189,7 +302,7 @@ end;
 procedure TForm1.ButtonDeleteClick(Sender: TObject);
 begin
   ADOQuery1.SQL.Clear;
-  StrSQL:='delete from computers where id='+DBLookupComboBoxID3.Text;
+  StrSQL:='DELETE FROM computers WHERE  id='+DBLookupComboBoxID3.Text;
   ADOQuery1.SQL.Add(StrSQL);
   ADOQuery1.ExecSQL;
   ADOQueryComputers.Close;
@@ -215,10 +328,93 @@ begin
      ServerSocket1.Socket.Connections[i].SendText('#date#');
 end;
 
-// Свернуть в трей
-procedure TForm1.ButtonTrayClick(Sender: TObject);
+// Если стоит флажек на чекбоксе - разблокируем компонент
+procedure TForm1.CheckBoxGroupClick(Sender: TObject);
 begin
-  Form1.Hide;
+  if CheckBoxGroup.Checked = True then
+  begin
+    RadioGroupGroupColumn.Enabled:=True;
+  end else
+  begin
+    RadioGroupGroupColumn.Enabled:=false;
+  end;
+end;
+
+// Если стоит флажек на чекбоксе - разблокируем компонент
+procedure TForm1.CheckBoxSearchClick(Sender: TObject);
+begin
+  if CheckBoxSearch.Checked = True then
+  begin
+   LabelDate.Enabled:=true; LabelNC.Enabled:=true; LabelIPad.Enabled:=true;
+    LabelMACad.Enabled:=true; LabelNb.Enabled:=true; LabelLoc.Enabled:=true;
+    DBLookupComboBoxNC.Enabled:=true; DBLookupComboBoxIP.Enabled:=true;
+    DBLookupComboBoxMAC.Enabled:=true; DBLookupComboBoxNb.Enabled:=true;
+    DBLookupComboBoxLoc.Enabled:=true;
+  end else
+  begin
+    LabelDate.Enabled:=false; LabelNC.Enabled:=false; LabelIPad.Enabled:=false;
+    LabelMACad.Enabled:=false; LabelNb.Enabled:=false; LabelLoc.Enabled:=false;
+    DBLookupComboBoxNC.Enabled:=false; DBLookupComboBoxIP.Enabled:=false;
+    DBLookupComboBoxMAC.Enabled:=false; DBLookupComboBoxNb.Enabled:=false;
+    DBLookupComboBoxLoc.Enabled:=false;
+  end;
+end;
+
+// Если стоит флажек на чекбоксе - разблокируем компонент
+procedure TForm1.CheckBoxSortClick(Sender: TObject);
+begin
+  if CheckBoxSort.Checked = True then
+  begin
+    RadioGroupSortColumn.Enabled:=True; RadioGroupAscDesc.Enabled:=True;
+  end else
+  begin
+    RadioGroupSortColumn.Enabled:=false; RadioGroupAscDesc.Enabled:=false;
+  end;
+end;
+
+procedure TForm1.DBLookupComboBoxIPClick(Sender: TObject);
+begin
+  DBLookupComboBoxLoc.KeyValue := NULL; DBLookupComboBoxNC.KeyValue := NULL;
+  EditSort.Text:='';
+  EditSort.Text := ADOQueryComputers.FieldByName('IP').AsString;
+end;
+
+procedure TForm1.DBLookupComboBoxLocClick(Sender: TObject);
+begin
+  DBLookupComboBoxMAC.KeyValue := NULL; DBLookupComboBoxIP.KeyValue := NULL;
+  DBLookupComboBoxNb.KeyValue := NULL;  DBLookupComboBoxNC.KeyValue := NULL;
+  EditSort.Text:='';
+  EditSort.Text := ADOQueryLocation.FieldByName('Location').AsString;
+end;
+
+procedure TForm1.DBLookupComboBoxLocDropDown(Sender: TObject);
+begin
+  Form1.ADOQueryLocation.Close;
+  Form1.ADOQueryLocation.Open;
+  Form1.ADOQueryNameComputer.Close;
+  Form1.ADOQueryNameComputer.Open;
+end;
+
+procedure TForm1.DBLookupComboBoxMACClick(Sender: TObject);
+begin
+  DBLookupComboBoxLoc.KeyValue := NULL; DBLookupComboBoxNC.KeyValue := NULL;
+  EditSort.Text:='';
+  EditSort.Text := ADOQueryComputers.FieldByName('MAC_address').AsString;
+end;
+
+procedure TForm1.DBLookupComboBoxNbClick(Sender: TObject);
+begin
+  DBLookupComboBoxLoc.KeyValue := NULL; DBLookupComboBoxNC.KeyValue := NULL;
+  EditSort.Text:='';
+  EditSort.Text := ADOQueryComputers.FieldByName('InventoryNumber').AsString;
+end;
+
+procedure TForm1.DBLookupComboBoxNCClick(Sender: TObject);
+begin
+  DBLookupComboBoxMAC.KeyValue := NULL; DBLookupComboBoxIP.KeyValue := NULL;
+  DBLookupComboBoxNb.KeyValue := NULL;  DBLookupComboBoxLoc.KeyValue := NULL;
+  EditSort.Text:='';
+  EditSort.Text := ADOQueryNameComputer.FieldByName('NameComputer').AsString;
 end;
 
 // вывести данные в Edit из таблицы Computers
@@ -230,7 +426,7 @@ begin
   EditIP2.Text := ADOQueryComputers.FieldByName('IP').AsString;
 end;
 
-
+// Форм закрывается - иконка в трее исчезает
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   TrayIcon1.Visible:=false;
@@ -250,6 +446,13 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   {При запуске форма недостуна}
   Form1.Enabled:=false;
+  LabelDate.Enabled:=false; LabelNC.Enabled:=false; LabelIPad.Enabled:=false;
+  LabelMACad.Enabled:=false; LabelNb.Enabled:=false; LabelLoc.Enabled:=false;
+  DBLookupComboBoxNC.Enabled:=false; DBLookupComboBoxIP.Enabled:=false;
+  DBLookupComboBoxMAC.Enabled:=false; DBLookupComboBoxNb.Enabled:=false;
+  DBLookupComboBoxLoc.Enabled:=false;
+  RadioGroupSortColumn.Enabled:=false; RadioGroupAscDesc.Enabled:=false;
+  RadioGroupGroupColumn.Enabled:=false;
   {Иконка программы в трее становится видимой}
   TrayIcon1.Visible:=true;
   {Запускаем сервер}
@@ -328,11 +531,11 @@ begin
     MAC_address := XMLDocument1.DocumentElement.ChildNodes['MAC_address'].Text;
     XMLDocument1.Active := false;
     ADOQuery1.SQL.Clear;
-    StrSQL := 'insert logs (NameComputer,IP,MAC_address,AccessTime) values ('''+NameComputer+''','''+IP_address+''','''+MAC_address+''', now())';
+    StrSQL := 'INSERT INTO logs (NameComputer,IP,MAC_address,AccessTime) VALUES ('''+NameComputer+''','''+IP_address+''','''+MAC_address+''', NOW())';
     ADOQuery1.SQL.Add(StrSQL);
     ADOQuery1.ExecSQL;
-    ADOQueryLogs.Close;
-    ADOQueryLogs.Open;
+    {ADOQueryLogs.Close;
+    ADOQueryLogs.Open; }
   end;
 end;
 

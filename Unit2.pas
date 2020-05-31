@@ -59,7 +59,9 @@ begin
   Ini.Free;
   Form1.ADOConnection1.Connected:=True;
   Form1.ADOQueryComputers.Open;
-  Form1.ADOQueryLogs.Open;
+  //Form1.ADOQueryLogs.Open;
+  Form1.ADOQueryLocation.Open;
+  Form1.ADOQueryNameComputer.Open;
   if Form1.ADOConnection1.Connected=True then
     Form1.Statusbar1.Panels.Items[0].Text := 'Database connected';
   Form1.Enabled:=true; // закрываем форму
