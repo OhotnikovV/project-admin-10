@@ -43,7 +43,7 @@ begin
   Form1.Close;
 end;
 
-//
+// Подключаемся к БД
 procedure TForm2.ButtonConnectClick(Sender: TObject);
 var
   Ini: TIniFile;

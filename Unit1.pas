@@ -325,7 +325,7 @@ end;
 procedure TForm1.ButtonUpdateLogsClick(Sender: TObject);
 begin
   for i := 0 to ServerSocket1.Socket.ActiveConnections - 1 do
-     ServerSocket1.Socket.Connections[i].SendText('#date#');
+     ServerSocket1.Socket.Connections[i].SendText('#D#');
 end;
 
 // Если стоит флажек на чекбоксе - разблокируем компонент
@@ -514,7 +514,7 @@ begin
     Exit;
   end;
   {Если кто-то кинул сообщение - рассылаем его всем клиентам}
-  if Copy(s,1,2) = '#P' then
+  if (Copy(s,1,2) = '#M')or (Copy(s,1,2) = '#P') then
   begin
     for i := 0 to ServerSocket1.Socket.ActiveConnections-1 do
       ServerSocket1.Socket.Connections[i].SendText(s);
