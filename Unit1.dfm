@@ -23,14 +23,11 @@ object Form1: TForm1
     Top = 0
     Width = 874
     Height = 559
-    ActivePage = TabSheet2
+    ActivePage = TabSheet6
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 23
-    ExplicitHeight = 536
     object TabSheet1: TTabSheet
       Caption = #1048#1085#1074#1077#1090#1072#1088#1080#1079#1072#1094#1080#1103
-      ExplicitHeight = 508
       object DBGridComputers: TDBGrid
         Left = 0
         Top = 0
@@ -52,7 +49,6 @@ object Form1: TForm1
         Height = 213
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 295
         object PageControl2: TPageControl
           Left = 1
           Top = 1
@@ -270,7 +266,6 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1051#1086#1075#1080
       ImageIndex = 1
-      ExplicitHeight = 508
       object PanelLogs: TPanel
         Left = 0
         Top = 327
@@ -278,7 +273,6 @@ object Form1: TForm1
         Height = 204
         Align = alBottom
         TabOrder = 0
-        ExplicitTop = 304
         object GroupBoxSearch: TGroupBox
           Left = 273
           Top = 1
@@ -287,7 +281,6 @@ object Form1: TForm1
           Align = alClient
           Caption = #1055#1086#1080#1089#1082' '#1087#1086' '#1079#1085#1072#1095#1077#1085#1080#1102
           TabOrder = 0
-          ExplicitWidth = 265
           object LabelDate: TLabel
             Left = 66
             Top = 21
@@ -404,7 +397,6 @@ object Form1: TForm1
           Align = alLeft
           Caption = #1043#1088#1091#1087#1087#1080#1088#1086#1074#1082#1072
           TabOrder = 1
-          ExplicitLeft = 153
           object RadioGroupGroupColumn: TRadioGroup
             Left = 2
             Top = 15
@@ -420,7 +412,6 @@ object Form1: TForm1
               #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077
               #1042#1088#1077#1084#1103' '#1076#1086#1089#1090#1091#1087#1072)
             TabOrder = 0
-            ExplicitWidth = 119
           end
         end
         object GroupBox3: TGroupBox
@@ -446,7 +437,6 @@ object Form1: TForm1
               #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077
               #1042#1088#1077#1084#1103' '#1076#1086#1089#1090#1091#1087#1072)
             TabOrder = 0
-            ExplicitWidth = 148
           end
           object RadioGroupAscDesc: TRadioGroup
             Left = 2
@@ -459,7 +449,6 @@ object Form1: TForm1
               #1055#1086' '#1074#1086#1079#1088#1072#1089#1090#1072#1085#1080#1102
               #1055#1086' '#1091#1073#1099#1074#1072#1085#1080#1102)
             TabOrder = 1
-            ExplicitWidth = 148
           end
         end
         object GroupBox1: TGroupBox
@@ -617,7 +606,6 @@ object Form1: TForm1
     object TabSheet6: TTabSheet
       Caption = #1057#1090#1072#1090#1091#1089
       ImageIndex = 2
-      ExplicitHeight = 508
       object PanelStatus: TPanel
         Left = 0
         Top = 0
@@ -625,7 +613,6 @@ object Form1: TForm1
         Height = 531
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 508
         object GroupBoxClientOnline: TGroupBox
           Left = 1
           Top = 201
@@ -634,7 +621,6 @@ object Form1: TForm1
           Align = alClient
           Caption = #1057#1087#1080#1089#1086#1082' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1086#1074' '#1086#1085#1083#1072#1081#1085
           TabOrder = 0
-          ExplicitHeight = 306
           object ListBoxClientOnline: TListBox
             Left = 2
             Top = 15
@@ -643,7 +629,6 @@ object Form1: TForm1
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
-            ExplicitHeight = 289
           end
         end
         object GroupBoxStatusSockets: TGroupBox
@@ -787,7 +772,8 @@ object Form1: TForm1
       OnClick = N1Click
     end
     object N3: TMenuItem
-      Caption = #1055#1086#1084#1086#1097#1100
+      Caption = #1057#1087#1088#1072#1074#1082#1072
+      OnClick = N3Click
     end
   end
 end

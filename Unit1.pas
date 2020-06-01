@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Data.Win.ADODB, Data.DB,
   Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls,
   System.Win.ScktComp, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc, IniFiles,
-  Vcl.Menus;
+  Vcl.Menus, ShellAPI;
 
 type
   TForm1 = class(TForm)
@@ -137,6 +137,7 @@ type
     procedure DBLookupComboBoxNbClick(Sender: TObject);
     procedure DBLookupComboBoxLocClick(Sender: TObject);
     procedure CheckBoxSearchClick(Sender: TObject);
+    procedure N3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -248,6 +249,11 @@ end;
 procedure TForm1.N1Click(Sender: TObject);
 begin
   Form1.Hide;
+end;
+
+procedure TForm1.N3Click(Sender: TObject);
+begin
+  ShellExecute(0,PChar('Open'), PChar('HelpNA.chm'),nil,nil,SW_SHOW);
 end;
 
 // Функция сортировки
