@@ -23,7 +23,7 @@ object Form1: TForm1
     Top = 0
     Width = 874
     Height = 559
-    ActivePage = TabSheet6
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -510,14 +510,14 @@ object Form1: TForm1
             TabOrder = 0
             OnClick = ButtonUpdateLogsClick
           end
-          object ButtonSort: TButton
+          object ButtonInquerty: TButton
             Left = 14
             Top = 16
             Width = 107
             Height = 25
             Caption = #1047#1072#1087#1088#1086#1089' '#1087#1086' '#1090#1072#1073#1083#1080#1094#1077
             TabOrder = 1
-            OnClick = ButtonSortClick
+            OnClick = ButtonInquertyClick
           end
           object CheckBoxGroup: TCheckBox
             Left = 14

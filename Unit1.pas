@@ -66,7 +66,7 @@ type
     ADOQueryComputers: TADOQuery;
     GroupBoxSearch: TGroupBox;
     EditSort: TEdit;
-    ButtonSort: TButton;
+    ButtonInquerty: TButton;
     RadioGroupGroupColumn: TRadioGroup;
     LabelDate: TLabel;
     DateTimePicker1: TDateTimePicker;
@@ -123,7 +123,7 @@ type
     procedure TrayIcon1DblClick(Sender: TObject);
     procedure ServerSocket1Accept(Sender: TObject; Socket: TCustomWinSocket);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure ButtonSortClick(Sender: TObject);
+    procedure ButtonInquertyClick(Sender: TObject);
     function Sort(StrSQL: string):string;
     function Group(StrSQL: string):string;
     function Search(StrSQL: string):string;
@@ -156,7 +156,7 @@ uses unit2;
 {$R *.dfm}
 
  // сортировка
-procedure TForm1.ButtonSortClick(Sender: TObject);
+procedure TForm1.ButtonInquertyClick(Sender: TObject);
 begin
   {С помощью оператора выбора case назначаем индексы группе переключателей}
   ADOQueryLogs.SQL.Clear; // очищаем свойство sql от запросов

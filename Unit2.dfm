@@ -58,15 +58,14 @@ object Form2: TForm2
       Width = 121
       Height = 21
       TabOrder = 0
-      Text = 'root'
     end
     object EditPassword: TEdit
       Left = 70
       Top = 72
       Width = 121
       Height = 21
+      PasswordChar = '*'
       TabOrder = 1
-      Text = '1234'
     end
     object EditServer: TEdit
       Left = 70
